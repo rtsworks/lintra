@@ -1,0 +1,9 @@
+{
+    "_comments": [
+        "Copyright (c) 2025 Daniel Rossinsky (https://github.com/rtsworks)",
+        "SPDX-License-Identifier: MIT"
+    ],
+    "script": "threadsafety.py",
+    "args": [],
+    "ctu": false
+}

@@ -1,0 +1,273 @@
+# =========================================================================
+#   Ceedling - Test-Centered Build System for C
+#   ThrowTheSwitch.org
+#   Copyright (c) 2010-25 Mike Karlesky, Mark VanderVoord, & Greg Williams
+#   SPDX-License-Identifier: MIT
+# =========================================================================
+
+# Copyright (c) 2025 Daniel Rossinsky (https://github.com/rtsworks)
+# SPDX-License-Identifier: MIT
+# This is a modified variant based on the default project.yml
+
+---
+# ---------------------------------- PROJECT --------------------------------- #
+# This is where Ceedling takes global project configurations
+:project:
+  # Ceedling location
+  :which_ceedling: vendor/ceedling
+  # Ceedling version
+  :ceedling_version: 1.0.1
+  # Build artifacts direcotry for ceedling
+  :build_root: build/ceedling
+  # Release build management
+  :release_build: FALSE
+  # Number of compile threads (default = 1)
+  :compile_threads: :auto
+  # Number of test run threads (default = 1)
+  :test_threads: :auto
+  # CMock usage
+  :use_mocks: TRUE
+  # CException usage
+  :use_exceptions: FALSE
+  # Runs the GCC preprocessor before ceedling handles tests
+  :use_test_preprocessor: :none # options are :none, :mocks, :tests, or :all
+  # Runs the GCC preprocessor on deeper files needed for CMock. Alternatively,
+  # Use :cmock: -> :includes: to manually inject needed header.
+  :use_deep_preprocessor: :none # options are :none or :mocks
+  # test file name prefix
+  :test_file_prefix: test_
+  # Configure backtrace for a crashing test
+  :use_backtrace: :gdb # options are :none, :simple, or :gdb
+  # Decorate Ceedling's output text.
+  :use_decorators: :auto # options are :auto, :all, or :none
+
+# ---------------------------------- PATHS ----------------------------------- #
+# This is where Ceedling should look for your source and test files.
+:paths:
+  # Test source file paths
+  :test:
+    - +:test/**
+    - -:test/support/
+  # Test support files path
+  :support:
+    - test/support/
+  # Project source paths
+  :source:
+    - src/**
+  # Project include paths
+  :include:
+    - include/**
+  # Project library paths
+  :libraries: []
+
+# --------------------------------- DEFINES ---------------------------------- #
+# Compilation symbols to be injected into builds
+:defines:
+  # Inject the following defines in test files
+  :test:
+    - TEST
+  # Inject the test file name as a define
+  :use_test_definition: FALSE
+
+# -------------------------------- LIBRARIES --------------------------------- #
+# These libraries are automatically injected into the build process.
+:libraries:
+  # Library location and linkage invocation placement
+  :placement: :end
+  # Library link flag
+  :flag: "-l${1}"
+  # Library path flag
+  :path_flag: "-L${1}"
+  # System libraries, exist in the tool path
+  :system:
+    - m
+    - pthread
+  # Libraries needed by the tests
+  :test: []
+
+# ---------------------------------- TOOLS ----------------------------------- #
+# Configure the tools used for the test build
+:tools:
+  # Test compiler configuration
+  :test_compiler:
+    :executable: gcc
+    :arguments:
+      - -std=c99
+      - -O0
+      - -ggdb3
+      - -MMD
+      - -MP
+      - -I${5}
+      - -D${6}
+      - -c
+      - ${1}
+      - -o ${2}
+  # Test linker configuration
+  :test_linker:
+    :executable: gcc
+    :arguments:
+      - ${1}
+      - ${5}
+      - -o ${2}
+      - ${4}
+  # Test fixture configuration
+  :test_fixture:
+    :executable: ${1}
+
+# ----------------------------- MODULE GENERATOR ----------------------------- #
+# Module generator configuration
+:module_generator:
+  # Module generation naming convention
+  :naming: :snake #options: :bumpy, :camel, :caps, or :snake
+  # Where to generatre source files
+  :path_src: src/
+  # Where to generate include files
+  :path_inc: include/
+  # Where to generate test files
+  :path_tst: test/
+   # Includes for test & src files
+#  :includes:
+#    :tst: []
+#      - header.h
+#    :src: []
+#      - header.h
+   # Boilerplate for src inc and test files
+#  :boilerplates:
+#    :src: ""
+#    :inc: ""
+#    :tst: ""
+
+# ---------------------------------- UNITY ----------------------------------- #
+# Unity testsuite configuration
+:unity:
+  # Array of defines to be declared at the top of the C runner file.
+  :defines:
+    - UNITY_INCLUDE_EXEC_TIME
+    - UNITY_SUPPORT_64
+    - UNITY_INT_WIDTH=32
+    - UNITY_LONG_WIDTH=32
+    - UNITY_POINTER_WIDTH=64
+  # Array of includes to be declared at the top of the C runner file.
+# :includes:
+#   - stdint.h
+  # This option should be enabled if c and c++ are mixed
+  :externc: TRUE
+  # Fail if expected call order doesn't match source order
+  :enforce_strict_ordering: TRUE
+
+# ---------------------------------- CMOCK ----------------------------------- #
+# CMock configuration.
+:cmock:
+  # Fail if expected call order doesn't match source order
+  :enforce_strict_ordering: TRUE
+  # Do we want cmock to enforce an argument check first when using a callback?
+  :callback_after_arg_check: TRUE
+  # Do we want cmock to include the number of calls to this callback, when using callbacks?
+  :callback_include_count: TRUE
+  # Do we want cmock to fail when it encounters a function call that wasn't expected?
+  :fail_on_unexpected_calls: TRUE
+  # Error on headers with no function prototypes
+  :when_no_prototypes: :error # options are :ignore, :warn, or :error
+  # Path to where the generated mock files are placed
+  :mock_path: build/ceedling/test/mocks
+  # Generated mock file name prefix
+  :mock_prefix: mock_
+  # Additional includes for CMock generated files
+#  :includes: []
+#  :includes_h_pre_orig_header: []
+#  :includes_h_post_orig_header: []
+#  :includes_c_pre_header: []
+#  :includes_c_post_header: []
+  # Treat typedefed types as
+#  :treat_as:
+#    byte: HEX8 # treat `byte` like an 8-bit hex
+#    u16: HEX16 # treat `u16` like a 16-bit hex
+#  :treat_as_array:
+#  :treat_as_void:
+  # For functions that receive array like pointers
+#  :array_size_type: uint8_t
+#  :array_size_name: arr_len
+  # How CMock will treat extern functions
+  :treat_externs: :exclude # options are :exclude or :include
+  # How CMock will treat inline functions
+  :treat_inlines: :exclude # options are :exclude or :include
+  # How verbose will CMock be ?
+  :verbosity: 2 # options are 0 (errors only), 1 (errors + warnings), 2 (normal) 3 (verbose)
+  # Defines for CMock 
+  :defines:
+#   - CMOCK_MEM_STATIC # CMock uses static memory
+#   - CMOCK_MEM_DYNAMIC # CMock may expand with dynamic memory
+#   - CMOCK_MEM_SIZE=1024 # Total amount for static, chunk size for dynamic
+#   - CMOCK_MEM_ALIGN=0 # Allign to 2^0, 2^1, 2^2 or 2^3 with values 0, 1, 2, 3
+#   - CMOCK_MEM_PTR_AS_INT=0 # 1 treat pointers as intptr_t, 0 treat pointers as void*
+#   - CMOCK_MEM_INDEX_TYPE=size_t # Should be large enough to point anywhere is CMock memory space
+  # Additional plugins for CMock
+  :plugins:
+    - :ignore
+    - :callback
+    - :array
+
+# ---------------------------------- GCOV ------------------------------------ #
+# For more information on these options, see docs in plugins/gcov
+:gcov:
+  # Enable simple coverage summaries
+  :summaries: TRUE
+  # Use manual report task
+  :report_task: FALSE
+  # Utilities to generate the test coverage report
+  :utilities:
+    - gcovr
+  # Specify one or more reports to generate.
+  :reports:
+    - HtmlDetailed
+    - Cobertura
+  # Configure GCOVR tool
+  :gcovr:
+    # Test HTML report file name
+    :html_artifact_filename: TestCoverageReport.html
+    # Test HTML report title
+    :html_title: Test Coverage Report
+    # Medium HTML coverage percentage
+    :html_medium_threshold: 75
+    # High HTML coverage percentage
+    :html_high_threshold: 100
+    # File HTML path configuration
+    :html_absolute_paths: FALSE
+    # HTML HTML page encoding
+    :html_encoding: UTF-8
+    # Pretty print the xml report
+    :cobertura_pretty: TRUE
+    # Test cobertura xml report file name
+    :cobertura_artifact_filename: TestCoverageReport.xml
+
+# ------------------------- REPORT TESTS LOG FACTORY ------------------------- #
+# Test report configuration for log factory
+:report_tests_log_factory:
+  :reports:
+    - junit
+    - html
+  :junit:
+    :filename: tests_report.xml
+  :html:
+    :filename: tests_report.html
+
+# ---------------------------------- PLUGINS --------------------------------- #
+# Ceedling features to be enabled
+:plugins:
+  # Base paths to search for plugin subdirectories
+  :load_paths:
+    - vendor/ceedling/plugins
+  # Enabled extentions
+  :enabled:
+    - module_generator
+    - beep
+    - gcov
+    # Report options (You'll want to choose one option, but may choose multiple stored options if desired)
+    #- report_build_warnings_log
+    - report_tests_gtestlike_stdout
+    #- report_tests_ide_stdout
+    - report_tests_log_factory
+    #- report_tests_pretty_stdout
+    #- report_tests_raw_output_log
+    #- report_tests_teamcity_stdout
+...

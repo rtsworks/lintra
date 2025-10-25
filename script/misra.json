@@ -1,0 +1,11 @@
+{
+    "_comments": [
+        "Copyright (c) 2025 Daniel Rossinsky (https://github.com/rtsworks)",
+        "SPDX-License-Identifier: MIT"
+    ],
+    "script": "misra.py",
+    "args": [
+        "--rule-texts=script/misra_c_2012_rules.txt"
+    ],
+    "ctu": true
+}
