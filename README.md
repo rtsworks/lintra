@@ -30,3 +30,17 @@ Lintra enforces a strict, fail-fast policy composed of three stages:
 [make]: https://www.gnu.org/software/make/
 
 If any stage fails, Lintra immediately halts the process.
+
+## Getting Started
+
+### Obtaining a copy of MISRA C:2012 guideline Headlines
+
+This project uses the file `misra_c_2012__headlines_for_cppcheck - AMD1+AMD2.txt` by **The MISRA Consortium Limited**, available [here].
+
+Licensed under [CC BY-NC-ND 4.0](https://creativecommons.org/licenses/by-nc-nd/4.0/).
+
+To use it here, download the file from the link above, rename it to `misra_c_2012_rules.txt`, and move it to the `scripts/` folder. No modifications are made to the file contents.
+
+**NOTE:** This file is deliberately listed in `.gitignore` to avoid redistributing it here, ensuring that the rest of the project remains entirely under the MIT license.
+
+[here]: https://gitlab.com/MISRA/MISRA-C/MISRA-C-2012/tools/-/blob/main/misra_c_2012__headlines_for_cppcheck%20-%20AMD1+AMD2.txt?ref_type=heads
