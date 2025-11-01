@@ -11,5 +11,8 @@ bin/
 # Ignore the misra rules .txt to simplify licensing
 script/misra_c_2012_rules.txt
 
+# Ignore auto-generated mocks
+/test/support/**
+
 # Don't ignore vendor/ceedling/bin
 !vendor/ceedling/bin/

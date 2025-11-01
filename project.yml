@@ -169,7 +169,7 @@
   # Error on headers with no function prototypes
   :when_no_prototypes: :error # options are :ignore, :warn, or :error
   # Path to where the generated mock files are placed
-  :mock_path: build/ceedling/test/mocks
+  :mock_path: test/support
   # Generated mock file name prefix
   :mock_prefix: mock_
   # Additional includes for CMock generated files
