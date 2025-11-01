@@ -110,7 +110,7 @@ lint: | $(CPPCHECK_DIR)
 
 # Rule for running ceedling tests + coverage
 test:
-	ceedling clobber gcov:all
+	ceedling gcov:all
 
 # Rule for building the target
 build: $(BIN_DIR)/$(TARGET)
@@ -130,6 +130,7 @@ $(BIN_DIR) $(BUILD_DIR) $(CPPCHECK_DIR):
 
 # Delete the ./build and ./bin directories
 clean:
+	ceedling clobber
 	rm -rf $(BUILD_ROOT)
 	rm -rf $(BIN_ROOT)
 
