@@ -10,3 +10,6 @@ bin/
 
 # Ignore the misra rules .txt to simplify licensing
 script/misra_c_2012_rules.txt
+
+# Don't ignore vendor/ceedling/bin
+!vendor/ceedling/bin/
