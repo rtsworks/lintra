@@ -225,7 +225,7 @@
   # Configure GCOVR tool
   :gcovr:
     # Test HTML report file name
-    :html_artifact_filename: TestCoverageReport.html
+    :html_artifact_filename: coverage_report.html
     # Test HTML report title
     :html_title: Test Coverage Report
     # Medium HTML coverage percentage
@@ -239,7 +239,7 @@
     # Pretty print the xml report
     :cobertura_pretty: TRUE
     # Test cobertura xml report file name
-    :cobertura_artifact_filename: TestCoverageReport.xml
+    :cobertura_artifact_filename: coverage_report.xml
 
 # ------------------------- REPORT TESTS LOG FACTORY ------------------------- #
 # Test report configuration for log factory
