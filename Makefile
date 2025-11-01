@@ -91,6 +91,11 @@ CPPCHECK_FLAGS += --addon=$(SCRIPT_DIR)/misra.json
 CPPCHECK_FLAGS += --addon=$(SCRIPT_DIR)/threadsafety.json
 CPPCHECK_FLAGS += -j$(THREADS)
 
+# ------------------------------- Ceedling path ------------------------------ #
+
+# Path to the local ceedling folder
+CEEDLING := vendor/ceedling/bin/ceedling
+
 # -------------------------------- Make rules -------------------------------- #
 
 # These targets are not real files, always run the recipe
@@ -110,7 +115,7 @@ lint: | $(CPPCHECK_DIR)
 
 # Rule for running ceedling tests + coverage
 test:
-	ceedling gcov:all
+	ruby $(CEEDLING) gcov:all
 
 # Rule for building the target
 build: $(BIN_DIR)/$(TARGET)
@@ -130,7 +135,7 @@ $(BIN_DIR) $(BUILD_DIR) $(CPPCHECK_DIR):
 
 # Delete the ./build and ./bin directories
 clean:
-	ceedling clobber
+	ruby $(CEEDLING) clobber
 	rm -rf $(BUILD_ROOT)
 	rm -rf $(BIN_ROOT)
 
