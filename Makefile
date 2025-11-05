@@ -97,7 +97,7 @@ CPPCHECK_FLAGS += -j$(CPPCHECK_THREADS)
 # Path to the local ceedling folder
 CEEDLING := vendor/ceedling/bin/ceedling
 
-# -------------------------------- Make rules -------------------------------- #
+# ------------------------------- Make targets ------------------------------- #
 
 # These targets are not real files, always run the recipe
 .PHONY: all lint test build clean
