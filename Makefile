@@ -6,8 +6,6 @@
 TARGET := prog.out
 # Build selection variable (debug by default)
 BUILD := debug
-# Number of threads to be used
-THREADS := 1
 
 # ----------------------------- Directory paths ------------------------------ #
 # Source file directory
@@ -68,6 +66,9 @@ LDLIBS := -lm -pthread
 
 # ------------------------------ CPPCheck config ----------------------------- #
 
+# Number of threads to be used by CPPCheck
+CPPCHECK_THREADS := 1
+
 # Flags to be used by the CPPCheck tool
 CPPCHECK_FLAGS := --verbose
 CPPCHECK_FLAGS += --error-exitcode=1
@@ -89,7 +90,7 @@ CPPCHECK_FLAGS += --report-type=misra-c-2012
 CPPCHECK_FLAGS += --inconclusive
 CPPCHECK_FLAGS += --addon=$(SCRIPT_DIR)/misra.json
 CPPCHECK_FLAGS += --addon=$(SCRIPT_DIR)/threadsafety.json
-CPPCHECK_FLAGS += -j$(THREADS)
+CPPCHECK_FLAGS += -j$(CPPCHECK_THREADS)
 
 # ------------------------------- Ceedling path ------------------------------ #
 
