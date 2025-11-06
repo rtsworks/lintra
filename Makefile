@@ -2,8 +2,8 @@
 # SPDX-License-Identifier: MIT
 
 # --------------------------------- GENERAL ---------------------------------- #
-# The target executable to be created
-TARGET := prog.out
+# The target binary to be created
+TARGET := prog.bin
 # Build selection variable (debug by default)
 BUILD := debug
 
@@ -26,7 +26,7 @@ BIN_ROOT = ./bin
 BIN_DIR := $(BIN_ROOT)/$(BUILD)
 
 # ---------------------------------- Files ----------------------------------- #
-# Find all the source files to be compiled
+# Find all the source files to be compiled (relative to ./src)
 SRCS := $(shell find $(SRC_DIR) -type f -name '*.c')
 # Path to all the .o files
 OBJS := $(SRCS:$(SRC_DIR)/%.c=$(BUILD_DIR)/%.o)
@@ -99,42 +99,42 @@ CEEDLING := vendor/ceedling/bin/ceedling
 
 # ------------------------------- Make targets ------------------------------- #
 
-# These targets are not real files, always run the recipe
+# Ensure workflow targets are not confused with files
 .PHONY: all lint test build clean
 
-# Make rule order, if any rule fails the process stops
-# Default make: Run the build rule
+# Make lint → test → build workflow. Stop the workflow when any step fails.
+# Default make target: Run the build prerequisite
 all: build
-# Build rule runs the test rule
+# Build target runs the test prerequisite
 build: test
-# Test rule runs lint rule
+# Test target runs lint prerequisite
 test: lint
 
-# Rule for linting the project (Require ./build/cppcheck dir to exist first)
+# Target for linting the project (ensures ./build/cppcheck directory exists)
 lint: | $(CPPCHECK_DIR)
 	cppcheck $(CPPCHECK_FLAGS) $(SRC_DIR)
 
-# Rule for running ceedling tests + coverage
+# Target for running ceedling tests + coverage
 test:
 	ruby $(CEEDLING) gcov:all
 
-# Rule for building the target
+# Target for building the project binary
 build: $(BIN_DIR)/$(TARGET)
 
-# Link the object files into an executable (Require ./bin dir to exist first)
+# Link the object files into an executable (ensures ./bin directory exists)
 $(BIN_DIR)/$(TARGET): $(OBJS) | $(BIN_DIR)
 	$(CC) $(LDFLAGS) $(OBJS) $(LDLIBS) -o $@
 
-# Compile all the sources into object files (Require ./build dir to exist first)
+# Compile all the sources into object files (ensures ./build directory exists)
 $(BUILD_DIR)/%.o: $(SRC_DIR)/%.c | $(BUILD_DIR)
 	mkdir -p $(dir $@)
 	$(CC) $(CPPFLAGS) $(CFLAGS) -c $< -o $@
 
-# Work directory creation rules
+# Directory targets (simply create the directories below when asked)
 $(BIN_DIR) $(BUILD_DIR) $(CPPCHECK_DIR):
 	mkdir -p $@
 
-# Delete the ./build and ./bin directories
+# Target for cleaning up the project
 clean:
 	ruby $(CEEDLING) clobber
 	rm -rf $(BUILD_ROOT)
