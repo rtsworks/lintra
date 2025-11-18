@@ -1,3 +1,6 @@
+<!-- Copyright (c) 2025 Daniel Rossinsky (https://github.com/rtsworks) -->
+<!-- SPDX-License-Identifier: MIT -->
+
 <div align="center">
 
   <!-- Banner placeholder -->
@@ -138,10 +141,10 @@ cd lintra
 make
 ```
 
-An executable should be created at `bin/debug/prog.out`. Running it will print:
+An executable should be created at `bin/debug/prog.bin`. Running it will print:
 
 ```bash
-$ ./bin/debug/prog.out 
+$ ./bin/debug/prog.bin 
 add: 20
 sub: 15
 mul: 10
@@ -199,3 +202,70 @@ For both builds:
 
 - Test reports are located in `build/ceedling/artifacts/gcov`
 - Coverage reports are located in `build/ceedling/artifacts/gcov/gcovr`
+
+Both the test and coverage reports are generated in XML and HTML formats.
+
+### How to configure `lintra`
+
+You can configure `lintra`’s toolkit and workflow as needed:
+
+#### Configuring the linter
+
+`lintra` uses CPPCheck as its linter. CPPCheck is configurable from the
+[Makefile]'s `CPPCheck config` section. The following files are used by CPPCheck
+for static analysis:
+- `script/type_sizes.xml` - specifies the platform-specific variable sizes.
+- `script/misra.json` - Enforces MISRA C:2012 Guidelines.
+- `script/threadsafety.json` - Static thread safety analysis.
+
+There are additional flags apart from the files above which you may choose
+to keep, modify, or remove.
+
+[Makefile]: https://github.com/rtsworks/lintra/blob/main/Makefile
+
+#### Configuring the test framework
+
+`lintra` uses Ceedling for testing. You can configure the framework in the
+`project.yml` file. This allows you to:
+
+- Add or remove test files
+- Configure mock generation
+- Customize test report outputs
+- Customize coverage report outputs
+
+Editing this file allows you to tailor the test framework to your project.
+
+#### Configuring the build process
+
+The build process is configurable from the [Makefile] using the following
+sections:
+- `GENERAL` - Choose the target name and default build (debug/release).
+- `Directory paths` - Decide the directory paths.
+- `Files` - Set the sources to be used for the build.
+- `Compiler config` - Decide what compiler, and compiler flags are used
+                      for release and debug builds.
+- `Make targets` - The **build** target controls how the executable will
+                   be created
+
+[Makefile]: https://github.com/rtsworks/lintra/blob/main/Makefile
+
+#### Changing the workflow
+
+The default `lintra` workflow runs lint → test → build automatically. This is
+controlled by the `Make targets` section in the [Makefile]:
+
+```bash
+# Make lint → test → build workflow. Stop the workflow when any step fails.
+# Default make target: Run the build prerequisite.
+all: build
+# Build target runs the test prerequisite.
+build: test
+# Test target runs lint prerequisite.
+test: lint
+```
+
+If you prefer to run each step manually, you can remove or reorder these lines.
+For example, keeping only `all: build` will make it build the project by default
+without running lint or tests first.
+
+[Makefile]: https://github.com/rtsworks/lintra/blob/main/Makefile
