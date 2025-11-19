@@ -10,7 +10,7 @@
   
   <!-- Badge placeholder -->
   ![OS: Windows / Linux](https://img.shields.io/badge/OS-Windows%20%7C%20Linux-blue)
-  [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+  [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE.md)
   ![Status: Active](https://img.shields.io/badge/status-active-brightgreen)
   
 </div>
@@ -269,3 +269,7 @@ For example, keeping only `all: build` will make it build the project by default
 without running lint or tests first.
 
 [Makefile]: https://github.com/rtsworks/lintra/blob/main/Makefile
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details.
