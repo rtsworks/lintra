@@ -1,0 +1,26 @@
+# Copyright (c) 2025 Daniel Rossinsky (https://github.com/rtsworks)
+# SPDX-License-Identifier: MIT
+
+# Fallback: automatically normalize text files not listed below
+* text=auto
+
+# Source code
+*.c      eol=lf
+*.cpp    eol=lf
+*.h      eol=lf
+*.hpp    eol=lf
+
+# Configuration files
+*.yml    eol=lf
+*.json   eol=lf
+*.xml    eol=lf
+
+# Script files
+Makefile eol=lf
+
+# Markdown and text
+*.txt    eol=lf
+*.md     eol=lf
+
+# Binary files
+*.png    binary
