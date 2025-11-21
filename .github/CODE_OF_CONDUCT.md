@@ -48,14 +48,16 @@ We agree to restrict the following behaviors in our community. Instances, threat
 
 Tensions can occur between community members even when they are trying their best to collaborate. Not every conflict represents a code of conduct violation, and this Code of Conduct reinforces encouraged behaviors and norms that can help avoid conflicts and minimize harm.
 
-When an incident does occur, it is important to report it promptly. To report a possible violation, **If you experience or witness unacceptable behavior, please report it by emailing our project conduct team at danielrossinsky@gmail.com. Reports will be handled confidentially. All reports will be acknowledged within 48 hours, and we aim to respond and investigate within two weeks.**
+When an incident does occur, it is important to report it promptly. To report a possible violation, **If you experience or witness unacceptable behavior, please report it by emailing the project’s conduct contact at danielrossinsky@gmail.com. Reports will be handled as confidentially as possible. As this project is maintained by a single individual on a best-effort basis, response and investigation times may vary.**
 
 Community Moderators take reports of violations seriously and will make every effort to respond in a timely manner. They will investigate all reports of code of conduct violations, reviewing messages, logs, and recordings, or interviewing witnesses and other participants. Community Moderators will keep investigation and enforcement actions as transparent as possible while prioritizing safety and confidentiality. In order to honor these values, enforcement actions are carried out in private with the involved parties, but communicating to the whole community may be part of a mutually agreed upon resolution.
 
 
 ## Addressing and Repairing Harm
 
-**Consequences for unacceptable behavior may include a private warning from the maintainers, temporary or permanent removal from project spaces, or reporting to relevant authorities if applicable. Our conduct team will evaluate reports fairly and confidentially, and maintainers may consult with the broader community if needed. Appeals may be submitted by contacting the conduct team at danielrossinsky@gmail.com.**
+**Consequences for unacceptable behavior may include a private warning, temporary or permanent removal from project spaces, or reporting to relevant authorities if applicable. Reports will be reviewed fairly and as confidentially as possible. As this project is maintained by a single individual on a best-effort basis, the timeframe and process for review or enforcement may vary.**
+
+**Appeals may be submitted by contacting danielrossinsky@gmail.com, and will be considered as time permits.**
 
 If an investigation by the Community Moderators finds that this Code of Conduct has been violated, the following enforcement ladder may be used to determine how best to repair harm, based on the incident's impact on the individuals involved and the community as a whole. Depending on the severity of a violation, lower rungs on the ladder may be skipped.
 
