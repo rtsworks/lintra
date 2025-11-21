@@ -270,6 +270,20 @@ without running lint or tests first.
 
 [Makefile]: https://github.com/rtsworks/lintra/blob/main/Makefile
 
+## CI/CD integration
+
+TODO: add later
+
+## Contributing
+
+We welcome contributions! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for
+details on our code of conduct and instructions for submitting pull requests.
+
+## Versioning
+
+We use [SemVer](http://semver.org/) for versioning. For the versions available,
+see the [tags on this repository](https://github.com/rtsworks/lintra/tags). 
+
 ## License
 
 Most of this project is licensed under the MIT License — see the [LICENSE.md](LICENSE.md)
