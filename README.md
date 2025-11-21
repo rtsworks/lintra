@@ -272,4 +272,9 @@ without running lint or tests first.
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details.
+Most of this project is licensed under the MIT License — see the [LICENSE.md](LICENSE.md)
+file for details.
+
+The Code of Conduct is adapted from the Contributor Covenant, version 3.0, 
+which is licensed under the CC-BY-SA-4.0 License — see the [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md) 
+file for details.
