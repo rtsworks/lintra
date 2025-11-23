@@ -13,6 +13,7 @@ script/misra_c_2012_rules.txt
 
 # Ignore auto-generated mocks
 /test/support/**
+!/test/support/.gitkeep
 
 # Don't ignore vendor/ceedling/bin
 !vendor/ceedling/bin/
