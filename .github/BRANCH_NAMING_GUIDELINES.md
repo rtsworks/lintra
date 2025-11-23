@@ -6,16 +6,12 @@
 To keep the repository organized and maintain a clean Git history, please follow
 these conventions when creating branches.
 
----
-
 ## Reserved Branches
 
 | Branch Name | Description                                   |
 | ----------- | --------------------------------------------- |
 | `main`      | Stable branch. Only merged PRs should go here |
 | `dev`       | Development branch for integrating features   |
-
----
 
 ## Work Branches
 
@@ -28,9 +24,6 @@ these conventions when creating branches.
 | `refactor/<module>` | Refactoring code            | Module or component being refactored                                    |
 | `test/<module>`     | Adding or updating tests    | Specify which module or feature is tested                               |
 | `perf/<module>`     | Performance improvements    | Indicate what was optimized                                             |
-
-
----
 
 ## Guidelines
 
