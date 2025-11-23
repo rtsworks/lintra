@@ -28,7 +28,7 @@ Closes # (issue number)
 - [ ] I have added tests that prove my fix is effective or my feature works
 - [ ] I have added necessary documentation
 - [ ] I have followed the [Commit Message Guidelines](COMMIT_MESSAGE_GUIDELINES.md)
-- [ ] My branch name follows the [Branch Naming Guidelines](.github/BRANCH_NAMING_GUIDELINES.md)
+- [ ] My branch name follows the [Branch Naming Guidelines](BRANCH_NAMING_GUIDELINES.md)
 
 ## Additional Notes
 
