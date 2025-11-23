@@ -39,9 +39,9 @@ code, documentation, bug reports, or ideas.
    ```
 
 6. **Open a Pull Request**
-   - Go to your fork on GitHub and click **Compare & pull request**.
-   - Add a title and description following the [Pull Request Guidelines](PULL_REQUEST_GUIDELINES.md)
-   - Click **Create pull request** and use the [Pull Request Template](PULL_REQUEST_TEMPLATE.md)
+   - Go to your fork on GitHub and click **"Compare & pull request"**.
+   - Add a title and description following the [Pull Request Guidelines](PULL_REQUEST_GUIDELINES.md).
+   - Click **"Create pull request"** and fill out the Pull Request Template.
 
 ## Reporting Issues
 
