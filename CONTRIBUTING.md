@@ -25,7 +25,7 @@ code, documentation, bug reports, or ideas.
    git checkout -b feature/new-command
    ```
 
-   Follow the [Branch Naming Guidelines](BRANCH_NAMING_GUIDELINES.md).
+   Follow the [Branch Naming Guidelines](.github/BRANCH_NAMING_GUIDELINES.md).
 
 
 4. **Make changes & commit**
