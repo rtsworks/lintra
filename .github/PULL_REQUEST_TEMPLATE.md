@@ -9,11 +9,17 @@ Closes # (issue number)
 
 ## Type of Change
 
-- [ ] Bug fix
-- [ ] New feature
-- [ ] Documentation update
-- [ ] Refactor
-- [ ] Other (please describe)
+- [ ] feat — new feature
+- [ ] fix — bug fix
+- [ ] docs — documentation update
+- [ ] style — formatting (no logic changes)
+- [ ] refactor — code improvement without behavior changes
+- [ ] perf — performance improvement
+- [ ] test — tests added or updated
+- [ ] chore — maintenance / tooling
+- [ ] ci — CI/CD configuration changes
+- [ ] build — build system or dependency updates
+- [ ] revert — revert a previous commit
 
 ## How to Test / Verify
 
