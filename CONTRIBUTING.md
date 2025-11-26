@@ -30,7 +30,7 @@ code, documentation, bug reports, or ideas.
 
 4. **Make changes & commit**
    - Follow project [Coding Style Guidelines](CODING_STYLE_GUIDELINES.md).
-   - Follow the [Commit Message Guidelines](COMMIT_MESSAGE_GUIDELINES.md).
+   - Follow the [Commit Message Guidelines](.github/COMMIT_MESSAGE_GUIDELINES.md).
 
 5. **Push your branch**
 
