@@ -11,7 +11,6 @@ code, documentation, bug reports, or ideas.
 1. **Fork the repository**
    This creates a copy in your GitHub account so you can make changes safely.
    
-
 2. **Clone your fork**
 
    ```bash
@@ -26,7 +25,6 @@ code, documentation, bug reports, or ideas.
    ```
 
    Follow the [Branch Naming Guidelines](.github/BRANCH_NAMING_GUIDELINES.md).
-
 
 4. **Make changes & commit**
    - Follow project [Coding Style Guidelines](CODING_STYLE_GUIDELINES.md).
