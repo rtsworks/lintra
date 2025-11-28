@@ -27,7 +27,7 @@ code, documentation, bug reports, or ideas.
    Follow the [Branch Naming Guidelines](.github/BRANCH_NAMING_GUIDELINES.md).
 
 4. **Make changes & commit**
-   - Follow project [Coding Style Guidelines](CODING_STYLE_GUIDELINES.md).
+   - Follow project [C Style Guide](C_STYLE_GUIDE.md).
    - Follow the [Commit Message Guidelines](.github/COMMIT_MESSAGE_GUIDELINES.md).
 
 5. **Push your branch**
