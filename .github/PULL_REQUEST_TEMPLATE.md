@@ -29,7 +29,7 @@ Closes # (issue number)
 
 ## Checklist
 
-- [ ] My code follows the [Coding Style Guidelines](CODING_STYLE_GUIDELINES.md)
+- [ ] My code follows the [C Style Guide](C_STYLE_GUIDE.md)
 - [ ] I have performed a self-review of my own code
 - [ ] I have added tests that prove my fix is effective or my feature works
 - [ ] I have added necessary documentation
