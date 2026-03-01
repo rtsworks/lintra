@@ -74,15 +74,21 @@ Windows users should install the following tools to run `lintra`:
 - [MinGW] — Provides the GCC compiler and [make] utility for building the project.  
 - [MSYS2] — Offers a Unix-like shell environment required for the Makefile to run
             properly.  
-- [python3] — Comes with pip3 on Windows, used to install gcovr for coverage
+- [python3] — Comes with pip3 on Windows, used to install `gcovr` for coverage
               reports.  
 - [Ruby] — Required for running [Ceedling], the unit testing framework.  
 - [Cppcheck] — Used to enforce MISRA C:2012 guidelines.
 
-Install gcovr via command line:
+Install `gcovr` via command line:
 
 ```bash
 pip3 install gcovr
+```
+
+Install [Ceedling] via command line:
+
+```bash
+gem install ceedling
 ```
 
 After installation, ensure that each tool’s executable directory is added to your
@@ -106,10 +112,16 @@ Linux users should install the following tools to run `lintra`:
 sudo apt update && sudo apt install build-essential git ruby-full python3 python3-pip
 ```
 
-- Install gcovr:
+- Install `gcovr`:
 
 ```bash
 sudo pip3 install gcovr
+```
+
+- Install [Ceedling]:
+
+```bash
+sudo gem install ceedling
 ```
 
 - Install cppcheck:
