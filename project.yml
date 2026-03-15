@@ -28,7 +28,7 @@
   # CMock usage
   :use_mocks: TRUE
   # CException usage
-  :use_exceptions: FALSE
+  :use_exceptions: TRUE
   # Runs the GCC preprocessor before ceedling handles tests
   :use_test_preprocessor: :none # options are :none, :mocks, :tests, or :all
   # Runs the GCC preprocessor on deeper files needed for CMock. Alternatively,
@@ -95,6 +95,9 @@
       - -std=c99
       - -O0
       - -ggdb3
+      - -Wall
+      - -Wextra
+      - -Werror
       - -MMD
       - -MP
       - -I${5}
@@ -113,29 +116,6 @@
   # Test fixture configuration
   :test_fixture:
     :executable: ${1}
-
-# ----------------------------- MODULE GENERATOR ----------------------------- #
-# Module generator configuration
-:module_generator:
-  # Module generation naming convention
-  :naming: :snake #options: :bumpy, :camel, :caps, or :snake
-  # Where to generatre source files
-  :path_src: src/
-  # Where to generate include files
-  :path_inc: include/
-  # Where to generate test files
-  :path_tst: test/
-   # Includes for test & src files
-#  :includes:
-#    :tst: []
-#      - header.h
-#    :src: []
-#      - header.h
-   # Boilerplate for src inc and test files
-#  :boilerplates:
-#    :src: ""
-#    :inc: ""
-#    :tst: ""
 
 # ---------------------------------- UNITY ----------------------------------- #
 # Unity testsuite configuration
@@ -206,7 +186,9 @@
   :plugins:
     - :ignore
     - :callback
+    - :expect_any_args
     - :array
+    - :cexception
 
 # ---------------------------------- GCOV ------------------------------------ #
 # For more information on these options, see docs in plugins/gcov
@@ -260,7 +242,6 @@
     - vendor/ceedling/plugins
   # Enabled extentions
   :enabled:
-    - module_generator
     - beep
     - gcov
     # Report options (You'll want to choose one option, but may choose multiple stored options if desired)
