@@ -59,7 +59,7 @@ by **The MISRA Consortium Limited**, available [here].
 Licensed under [CC BY-NC-ND 4.0](https://creativecommons.org/licenses/by-nc-nd/4.0/).
 
 To use it here, download the file from the link above, rename it to
-`misra_c_2012_rules.txt`, and move it to the `scripts/` folder. No modifications
+`misra_c_2012_rules.txt`, and move it to the `cppcheck/` folder. No modifications
 are made to the file contents.
 
 **NOTE:** This file is deliberately listed in `.gitignore` to avoid redistributing
@@ -226,9 +226,9 @@ You can configure `lintra`’s toolkit and workflow as needed:
 `lintra` uses CPPCheck as its linter. CPPCheck is configurable from the
 [Makefile]'s `CPPCheck config` section. The following files are used by CPPCheck
 for static analysis:
-- `script/type_sizes.xml` - specifies the platform-specific variable sizes.
-- `script/misra.json` - Enforces MISRA C:2012 Guidelines.
-- `script/threadsafety.json` - Static thread safety analysis.
+- `cppcheck/type_sizes.xml` - specifies the platform-specific variable sizes.
+- `cppcheck/misra.json` - Enforces MISRA C:2012 Guidelines.
+- `cppcheck/threadsafety.json` - Static thread safety analysis.
 
 There are additional flags apart from the files above which you may choose
 to keep, modify, or remove.

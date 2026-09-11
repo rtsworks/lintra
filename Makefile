@@ -15,18 +15,18 @@ BUILD := debug
 SRC_DIR := ./src
 # Include file directory.
 INCLUDE_DIR := ./include
-# Script file directory.
-SCRIPT_DIR := ./script
 # Build directory root.
 BUILD_ROOT = ./build
 # Contains all the build artifacts.
 BUILD_DIR := $(BUILD_ROOT)/$(BUILD)
-# Contains CPPCheck related artifacts.
-CPPCHECK_DIR := $(BUILD_ROOT)/cppcheck
 # Bin directory root.
 BIN_ROOT = ./bin
 # Contains the output files.
 BIN_DIR := $(BIN_ROOT)/$(BUILD)
+# Contains CPPCheck's incremental analysis cache.
+CPPCHECK_CACHE := $(BUILD_ROOT)/cppcheck
+# CPPCheck configuration directory.
+CPPCHECK_CONFIG := ./cppcheck
 
 # ---------------------------------- Files ----------------------------------- #
 # Source files discovered recursively under SRC_DIR.
@@ -84,9 +84,9 @@ CPPCHECK_FLAGS += --suppress=unmatchedSuppression
 CPPCHECK_FLAGS += --suppress=misra-c2012-21.6
 CPPCHECK_FLAGS += --inline-suppr
 CPPCHECK_FLAGS += -I$(INCLUDE_DIR)
-CPPCHECK_FLAGS += --cppcheck-build-dir=$(CPPCHECK_DIR)
+CPPCHECK_FLAGS += --cppcheck-build-dir=$(CPPCHECK_CACHE)
 CPPCHECK_FLAGS += --relative-paths=.
-CPPCHECK_FLAGS += --platform=$(SCRIPT_DIR)/type_sizes.xml
+CPPCHECK_FLAGS += --platform=$(CPPCHECK_CONFIG)/type_sizes.xml
 CPPCHECK_FLAGS += --language=c
 CPPCHECK_FLAGS += --std=c99
 CPPCHECK_FLAGS += --library=posix.cfg
@@ -95,8 +95,8 @@ CPPCHECK_FLAGS += --safety
 CPPCHECK_FLAGS += --check-level=exhaustive
 CPPCHECK_FLAGS += --report-type=misra-c-2012
 CPPCHECK_FLAGS += --inconclusive
-CPPCHECK_FLAGS += --addon=$(SCRIPT_DIR)/misra.json
-CPPCHECK_FLAGS += --addon=$(SCRIPT_DIR)/threadsafety.json
+CPPCHECK_FLAGS += --addon=$(CPPCHECK_CONFIG)/misra.json
+CPPCHECK_FLAGS += --addon=$(CPPCHECK_CONFIG)/threadsafety.json
 CPPCHECK_FLAGS += -j$(CPPCHECK_THREADS)
 
 # ------------------------------- Ceedling path ------------------------------ #
@@ -119,7 +119,7 @@ test: lint
 
 # Run static analysis with CPPCheck using the configured MISRA and thread-safety
 # addons.
-lint: | $(CPPCHECK_DIR)
+lint: | $(CPPCHECK_CACHE)
 	cppcheck $(CPPCHECK_FLAGS) $(SRC_DIR)
 
 # Run Ceedling tests + gcovr coverage tool.
@@ -139,7 +139,7 @@ $(BUILD_DIR)/%.o: $(SRC_DIR)/%.c | $(BUILD_DIR)
 	$(CC) $(CPPFLAGS) $(CFLAGS) -c $< -o $@
 
 # Create the directories below when asked.
-$(BIN_DIR) $(BUILD_DIR) $(CPPCHECK_DIR):
+$(BIN_DIR) $(BUILD_DIR) $(CPPCHECK_CACHE):
 	mkdir -p $@
 
 # Clean up the project. 'clobber' removes Ceedling build artifacts and

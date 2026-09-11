@@ -5,7 +5,7 @@
     ],
     "script": "misra.py",
     "args": [
-        "--rule-texts=script/misra_c_2012_rules.txt"
+        "--rule-texts=cppcheck/misra_c_2012_rules.txt"
     ],
     "ctu": true
 }

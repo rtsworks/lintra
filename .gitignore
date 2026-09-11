@@ -9,7 +9,7 @@ build/
 bin/
 
 # Ignore the misra rules .txt to simplify licensing
-script/misra_c_2012_rules.txt
+cppcheck/misra_c_2012_rules.txt
 
 # Ignore auto-generated mocks
 /test/support/**
