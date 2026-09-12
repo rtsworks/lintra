@@ -1,0 +1,80 @@
+# Copyright (c) 2025 Daniel Rossinsky (https://github.com/rtsworks)
+# SPDX-License-Identifier: MIT
+
+---
+Language: C
+
+# ------------------------------- Line length -------------------------------- #
+ColumnLimit: 80
+
+# ------------------------------- Indentation -------------------------------- #
+IndentWidth: 4
+TabWidth: 4
+UseTab: Never
+
+# ---------------------------------- Braces ---------------------------------- #
+# K&R style everywhere
+BreakBeforeBraces: Linux
+# Force braces onto every if/for/while body, even single-statement ones.
+InsertBraces: true
+# Never collapse enums/functions/case bodies onto one line, regardless of
+# how short they are.
+AllowShortCaseExpressionOnASingleLine: false
+AllowShortEnumsOnASingleLine: false
+AllowShortFunctionsOnASingleLine: None
+
+# --------------------------------- Pointers --------------------------------- #
+PointerAlignment: Right
+QualifierAlignment: Left
+
+# -------------------------------- Alignment --------------------------------- #
+AlignArrayOfStructures: Left
+AlignEscapedNewlines: Left
+AlignConsecutiveAssignments:
+  Enabled: true
+  AcrossComments: true
+  AlignCompound: true
+AlignConsecutiveDeclarations:
+  Enabled: true
+  AcrossComments: true
+  AlignFunctionPointers: true
+AlignConsecutiveMacros:
+  Enabled: true
+  AcrossComments: true
+
+# --------------------------------- Includes --------------------------------- #
+# Module's own header first (handled automatically via main-header
+# detection), then everything else split into <angle brackets>
+# (standard/system headers) before "quoted" (project headers).
+IncludeBlocks: Regroup
+IncludeCategories:
+  - Regex: '^<.*>$'
+    Priority: 1
+    SortPriority: 0
+    CaseSensitive: false
+  - Regex: '.*'
+    Priority: 2
+    SortPriority: 0
+    CaseSensitive: false
+SortIncludes:
+  IgnoreCase: true
+
+# ---------------------------------- Enums ----------------------------------- #
+EnumTrailingComma: Remove
+
+# ------------------------------- Blank lines -------------------------------- #
+KeepEmptyLines:
+  AtStartOfBlock: false
+  AtStartOfFile: false
+RemoveEmptyLinesInUnwrappedLines: true
+SeparateDefinitionBlocks: Always
+
+# ------------------------------- Line endings ------------------------------- #
+LineEnding: LF
+
+# ------------------------- Redundant token removal -------------------------- #
+# Strips parens directly wrapping a return value (return (x); -> return x;).
+# Never touches precedence-clarifying parens like (a + b) * c.
+RemoveParentheses: ReturnStatement
+RemoveSemicolon: true
+...
