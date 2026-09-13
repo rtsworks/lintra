@@ -10,24 +10,21 @@
 #define HAL_GPIO_H
 
 /** @brief HAL GPIO pin number enumeration. */
-typedef enum hal_gpio_pin_e
-{
-    GPIO_PIN_0,    /**< GPIO pin number 0 */
-    GPIO_PIN_1,    /**< GPIO pin number 1 */
+typedef enum hal_gpio_pin_e {
+    GPIO_PIN_0, /**< GPIO pin number 0 */
+    GPIO_PIN_1, /**< GPIO pin number 1 */
     /* As much as needed... */
-    GPIO_PIN_COUNT /**< GPIO pin count    */ 
+    GPIO_PIN_COUNT /**< GPIO pin count    */
 } hal_gpio_pin_e;
 
 /** @brief HAL GPIO pin direction enumeration. */
-typedef enum hal_gpio_dir_e
-{
+typedef enum hal_gpio_dir_e {
     GPIO_PIN_IN, /**< GPIO pin input  */
     GPIO_PIN_OUT /**< GPIO pin output */
 } hal_gpio_dir_e;
 
 /** @brief HAL GPIO pin value enumeration. */
-typedef enum hal_gpio_value_e
-{
+typedef enum hal_gpio_value_e {
     GPIO_PIN_LOW, /**< GPIO value low  */
     GPIO_PIN_HIGH /**< GPIO value high */
 } hal_gpio_value_e;

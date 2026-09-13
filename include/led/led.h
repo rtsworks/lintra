@@ -20,7 +20,7 @@ void led_off(void);
 
 /**
  * @brief Get the current state of the led.
- * @return 1 if led is on, otherwise 0. 
+ * @return 1 if led is on, otherwise 0.
  */
 int led_state(void);
 

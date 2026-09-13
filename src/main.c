@@ -2,13 +2,13 @@
 /* SPDX-License-Identifier: MIT                                      */
 
 /* Standard library includes */
+#include <inttypes.h>
 #include <stdint.h>
 #include <stdio.h>
-#include <inttypes.h>
 
 /* User code includes */
-#include "util/calc.h"
 #include "led/led.h"
+#include "util/calc.h"
 
 int main(void)
 {
@@ -20,7 +20,7 @@ int main(void)
     led_on();
     led_off();
     int state = led_state();
-    
+
     (void)printf("add: %" PRIu32 "\n", add);
     (void)printf("sub: %" PRIu32 "\n", sub);
     (void)printf("mul: %" PRIu32 "\n", mul);

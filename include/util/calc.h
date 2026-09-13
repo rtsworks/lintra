@@ -16,7 +16,7 @@
  * @brief Add one value with another
  * @param lhs left hand side value
  * @param rhs right hand side value
- * @return The result of lhs + rhs. 
+ * @return The result of lhs + rhs.
  */
 int32_t util_calc_add(int32_t lhs, int32_t rhs);
 
@@ -24,7 +24,7 @@ int32_t util_calc_add(int32_t lhs, int32_t rhs);
  * @brief Subtract one value from another.
  * @param lhs left hand side value
  * @param rhs right hand side value
- * @return The result of lhs - rhs. 
+ * @return The result of lhs - rhs.
  */
 int32_t util_calc_sub(int32_t lhs, int32_t rhs);
 
