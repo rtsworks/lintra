@@ -3,8 +3,11 @@
 
 # C Style Guide
 
-This document defines the **coding style and formatting rules** for all C source
-code in this project. It supplements—but does **not replace** - MISRA C:2012.
+This document defines the **coding style and naming conventions** for all C
+source code in this project. It supplements—but does **not replace** - MISRA
+C:2012. Formatting (indentation, braces, spacing, line length, alignment,
+etc.) is handled separately by [clang-format](.clang-format) and is not
+documented here.
 
 The goals of this style guide are:
 
@@ -25,8 +28,11 @@ It does **not** cover build scripts, tests, or documentation unless they use C.
 
 ## 2. Relationship to MISRA C:2012
 
-All code **must comply with MISRA C:2012**, except where explicitly deviated by
-the project’s approved **MISRA Deviation Procedure**.
+All code **must comply with MISRA C:2012**. A deviation is only permitted as
+an inline `/* cppcheck-suppress misra-c2012-<rule> */` comment placed directly
+above the violating line, immediately followed by a comment justifying why
+the deviation is necessary. Undocumented or unjustified suppressions are not
+allowed.
 
 MISRA governs:
 
@@ -39,10 +45,11 @@ MISRA governs:
 This style guide governs:
 
 * naming conventions
-* indentation and formatting
 * header layout
 * file organization
 * project conventions
+
+Formatting is governed by [clang-format](.clang-format), not this document.
 
 **If a rule here conflicts with MISRA, MISRA takes precedence.**
 
@@ -53,8 +60,18 @@ This style guide governs:
 * Source files: `module_name.c`
 * Header files: `module_name.h`
 * Private module headers: `module_name_priv.h`
+* Additional internal source files: `module_name_<descriptor>.c`
+* Test files: `test_<module_name>.c`
 
 Names must be lowercase with underscores.
+
+A module may consist of only a header file, with no corresponding `.c`
+file, when it contains no implementation requiring compilation.
+
+This is distinct from a configuration header shared across multiple
+modules in a layer (e.g. hardware/board configuration used by several
+drivers) — such a header is not a module itself and does not get a
+dedicated directory.
 
 ### 3.2 File Structure
 
@@ -63,38 +80,89 @@ Names must be lowercase with underscores.
 
 ### 3.3 File Placement
 
-Each module must be organized in a dedicated directory under the project’s
-standard structure. A typical module layout is:
+A module's *source* and *test suite* each need their own dedicated
+directory only once they grow beyond a single file — for source, a
+private header or multiple source files; for tests, multiple test files
+split by scenario for readability. A module's public header never does —
+a module only ever has one. Until dedicated, small single-file modules
+that belong to a common category sit flatly alongside each other inside
+that category's shared directory. A typical module layout is:
 
-- `src/<module_name>/` — C source files
-- `include/<module_name>/` — Public header files
-- `test/<module_name>/` — Unit tests (non-hardware-dependent only)
+- `src/<module_name>/` — C source files (once dedicated)
+- `include/` — Public header file (always flat within its category, or
+  directly under `include/` if standalone)
+- `test/<module_name>/` — Unit test files (once dedicated;
+  non-hardware-dependent only)
 
 #### 3.3.1 Module File Names
 
-Each module consists of the following files:
+Each module consists of the following files (see Section 3.1 for naming):
 
-| Purpose       | Required Filename      | Description                                       |
-|---------------|------------------------|---------------------------------------------------|
-| Source file   | `module_name.c`        | Implementation of the module                      |
-| Public header | `module_name.h`        | Interface exposed to other modules                |
-| Test file     | `test_<module_name>.c` | Unit tests for logic not depending on hardware/OS |
+| Purpose       | Description                                        |
+|---------------|-----------------------------------------------------|
+| Source file   | Implementation of the module                       |
+| Public header | Interface exposed to other modules                 |
+| Test file     | Unit tests for logic not depending on hardware/OS  |
 
-**Example: ADC module**
+A module may omit the source file when it has no implementation requiring
+compilation (see Section 3.1).
 
-- `src/adc/adc.c`
-- `include/adc/adc.h`
-- `test/adc/test_adc.c` — Only if the logic is testable without hardware
+**Example: ADC module (needs a private header)**
+
+`adc` realistically belongs inside a shared category like `bsp` alongside
+other peripheral drivers. Its private header for calibration helpers
+means its *source* graduates into its own subdirectory — but its public
+header does not, since a module only ever has one and a dedicated
+directory would hold nothing else:
+
+- `src/bsp/adc/adc.c`
+- `src/bsp/adc/adc_priv.h`
+- `include/bsp/adc.h`
+- `test/bsp/test_adc.c` — Only if the logic is testable without hardware
+
+**Example: HAL layer (flat category directory)**
+
+Each of these is a single source + single header pair, so none of them
+need their own subdirectory — they sit flatly inside the shared `hal`
+category:
+
+- `src/hal/gpio.c`, `include/hal/gpio.h`
+- `src/hal/uart.c`, `include/hal/uart.h`
+- `src/hal/spi.c`, `include/hal/spi.h`
+- `src/hal/timer.c`, `include/hal/timer.h`
+
+The moment one of them needs a private header or splits into multiple
+source files, that module alone graduates into its own subdirectory —
+e.g. `src/hal/uart/uart.c` and `src/hal/uart/uart_isr.c` — while the
+others stay flat.
+
+**Example: shared configuration header (not a module)**
+
+- `include/board_config.h` — configures several drivers in a layer; no
+  dedicated directory, no corresponding `.c` file
 
 #### 3.3.2 Rules
 
-- Each module must reside in its own directory.
-- File names must match the module name exactly (lowercase, underscores allowed).
-- Only the public header for a module belongs in `include/<module_name>/`.  
-  All internal headers required by the module should remain inside 
-  `src/<module_name>/` alongside the source files.
+- A module's source graduates into its own dedicated directory once it
+  needs more than one source file or a private header. Until then, it may
+  sit flatly inside its category's shared `src/` directory alongside
+  sibling modules.
+- A module's test suite graduates into its own dedicated directory the
+  same way — once it needs more than one test file (e.g. split by
+  scenario for readability). Until then, it sits flatly in its category's
+  shared `test/` directory alongside sibling modules.
+- A module's public header never gets a dedicated directory of its own —
+  a module only ever has one, so there is nothing else to put in such a
+  directory regardless of how complex its source becomes. It always sits
+  flatly in its category's shared `include/` directory (or directly under
+  `include/` for a standalone module).
+- File names must match the module name exactly.
+- Internal headers belong in `src/`, next to the module's source file(s),
+  never in `include/`.
 - Test files must not depend on hardware peripherals or drivers.
-- Modules must not define source files outside their own directory.
+- A module's source and test files must live in their own directory once
+  they have one, or in their shared category directory while flat — never
+  scattered elsewhere.
 
 ### 3.4 Include Paths
 
@@ -123,97 +191,15 @@ All header files must use traditional include guards:
 ```
 
 Guard macro must reflect the relative include path in uppercase with underscores.
-The example above is for the file located in `include/drivers/i2c/i2c.h`
+The example above is for the file located in `include/drivers/i2c/i2c.h`. This
+header guard can also be prefixed by the projects name to reduce the chance of
+name collisions.
 
-## 4. Formatting
+## 4. Naming Conventions
 
-### 4.1 Indentation
+### 4.1 Variables
 
-Use 4 spaces per indentation level, **never** use tabs.
-
-### 4.2 Braces
-
-Conditional branches and control flow statements must follow Allman style,
-with the exception of do-while loops.
-
-Allman style:
-
-```
-if (condition) 
-{
-    ...
-} 
-else 
-{
-    ...
-}
-```
-
-```
-switch (state)
-{
-case STATE_IDLE:
-    ...
-    break;
-case STATE_BUSY:
-    ...
-    break;
-default:
-    ...
-    break;
-}
-```
-
-```
-for (...) 
-{
-    ...
-}
-```
-
-```
-while (...) 
-{
-    ...
-}
-```
-
-do-while loops must use the following format:
-
-```
-do {
-    ...
-} while (...);
-```
-
-Function definitions must follow allman style:
-
-```
-void func(void)
-{
-    ...
-}
-```
-
-### 4.3 Line Length
-
-* Maximum 80 characters per line.
-* Comments may exceed this only for URLs or doxygen markdown tables.
-
-### 4.4 Spacing Rules
-
-* One space after if, for, while, switch: `while (...)`
-* case and default labels inside switch statements are not indented and must
-  align with the switch keyword.
-* No space before parentheses in function calls: `func(...);`
-* One space around operators: `a = b + c;`
-* No trailing whitespace.
-
-## 5. Naming Conventions
-
-### 5.1 Variables
-
-#### 5.1.1 General Rules
+#### 4.1.1 General Rules
 
 * Use **lowercase with underscores** for variable names: `uint32_t my_var;`.
 * Never declare multiple variables in a single statement:
@@ -222,14 +208,13 @@ uint8_t a;    /* OK */
 uint8_t a, b; /* Not allowed */
 ```
 
-#### 5.1.2 Pointer Variables
+#### 4.1.2 Pointer Variables
 
-* Pointer stars must be written next to the type: `uint8_t* p_data;`
-* Prefix pointers with `p_`: `uint8_t* p_data;`.
-* Prefix pointer-to-pointer with `pp_`: `uint8_t** pp_data;`.
-* Prefix function pointers with `fp_`: `void (*fp_handler)(int);`.
+* Suffix pointer variables with `_p`: `uint8_t *data_p;`
+* Suffix pointer-to-pointer variables with `_pp`: `uint8_t **data_pp;`
+* Suffix function-pointer variables with `_fp`: `void (*handler_fp)(int);`
 
-#### 5.1.3 Boolean Variables
+#### 4.1.3 Boolean Variables
 
 Boolean variables must use `bool` from `<stdbool.h>`.
 
@@ -242,19 +227,37 @@ true/false values, except when:
 
 Prefix boolean variables with `is_` or `has_`: `is_enabled`, `has_error`.
 
-### 5.2 Functions
+#### 4.1.4 File-Static Objects
+
+Global variables with external linkage (plain globals) are **not allowed**.
+Every object at file scope must be declared `static`, giving it internal
+linkage.
+
+Prefix file-static objects with `s_`:
+
+```
+static uint32_t s_counter;
+```
+
+The static prefix and a pointer suffix combine when both apply, prefix
+first and suffix last:
+
+```
+static uint8_t *s_buffer_p;
+```
+
+### 4.2 Functions
 
 Use **lowercase with underscores** for function names: `uint32_t my_foo(void);`.
 
-### 5.3 Types
+### 4.3 Types
 
-#### 5.3.1 Enums
+#### 4.3.1 Enums
 
 Postfix enum typedefs with `_e`:
 
 ```
-typedef enum
-{
+typedef enum {
     ADC_A,
     ADC_B
 } adc_e;
@@ -262,29 +265,35 @@ typedef enum
 
 Enum entries must not end with a trailing comma after the final element.
 
-#### 5.3.2 Structs
+#### 4.3.2 Ordinary Types
 
-Postfix struct typedefs with `_t`:
+Postfix ordinary typedefs (e.g. structs) with `_t`:
 
 ```
-typedef struct
-{
+typedef struct {
     ...
 } adc_t;
 ```
 
-#### 5.3.3 Unions
+#### 4.3.3 Unions
 
 Postfix union typedefs with `_u`:
 
 ```
-typedef union
-{
+typedef union {
     ...
 } adc_u;
 ```
 
-### 5.4 Macros
+#### 4.3.4 Function-Pointer Typedefs
+
+Postfix function-pointer typedefs with `_fp_t`:
+
+```
+typedef void (*adc_callback_fp_t)(int);
+```
+
+### 4.4 Macros
 
 Macros must be all uppercase with module name prefix:
 
@@ -293,14 +302,23 @@ Macros must be all uppercase with module name prefix:
 #define ADC_CHANNELS (16U)
 ```
 
-### 5.5 Abbreviations
+Configuration macros (e.g. in a shared configuration header — see Section
+3.1) use a `CONFIG_` prefix, in addition to the module name when the value
+configures one specific module:
+
+```
+#define CONFIG_TIMER_SERVER_SLOTS (8U) /* configures the timer server module */
+#define CONFIG_BOARD_CLOCK_HZ (16000000UL) /* shared across the layer */
+```
+
+### 4.5 Abbreviations
 
 * Avoid abbreviations unless they are universally understood (e.g., id, crc).
 * Avoid ambiguous or cryptic abbreviations.
 
-## 6. Declarations and Object Rules
+## 5. Declarations and Object Rules
 
-### 6.1 Const Correctness
+### 5.1 Const Correctness
 
 The `const` qualifier must be used wherever possible to enforce immutability
 and improve code safety:
@@ -311,24 +329,24 @@ and improve code safety:
 * Pointers to read-only data must declare the pointed-to data as `const`.
 * Never cast away `const`.
 
-### 6.2 Initialization
+### 5.2 Initialization
 
 * All variables must be initialized at the point of declaration. This includes
   static storage duration objects.
 * Integer literals must use appropriate suffixes (e.g., U, UL).
 
 ```
-static uint32_t value = 0U;
+static uint32_t s_value = 0U;
 uint32_t counter = 0U;
 bool is_ready = false;
 ```
 
-### 6.3 Magic Numbers
+### 5.3 Magic Numbers
 
 Numeric literals must not appear directly in code except in the following cases:
 
 * 0, 1, and -1 when semantically clear.
-* Bit shifts (e.g., 1U << 3).
+* Bit shifts (e.g., 1U << BIT_POSITION).
 * Loop counters in for-statements when the literal is 0 or 1.
 
 All other numeric values must be defined as named constants or macros.
@@ -337,34 +355,47 @@ All other numeric values must be defined as named constants or macros.
 * Literal suffixes must match the intended type (e.g., U, UL).
 * Floating-point literals must use explicit suffixes (e.g., 1.0F).
 
-## 7. Comments
+#### 5.3.1 Enum vs. Macro
+
+Use an **enum** when the value is one of a related, mutually-exclusive set
+of symbolic options (states, error codes, pin identifiers, modes).
+
+Use a **macro** for a standalone numeric constant, or whenever the value
+must be visible to the preprocessor (`#if`). A macro is also required
+whenever an exact literal suffix must be enforced (e.g., `U`, `UL`, `F`),
+since an enum member's underlying type is implementation-defined and
+cannot carry one.
+
+## 6. Comments
 
 * Use `/* */` for normal comments.
 * `//` single-line comments are not permitted.
 * Doxygen comments (`/** */`) are allowed only in `.h` files.
 * Keep comments concise.
 
-## 8. Documentation
+## 7. Documentation
 
 Use Doxygen to document only `.h` files. See [Doxygen guidelines](DOXYGEN_GUIDELINES.md)
 for more details.
 
-## 9. Functions
+## 8. Functions
 
 * Functions must not exceed 100 lines of executable code.
 * Function length excludes blank lines and comments.
 * Functions must not exceed 5 parameters.
 * Avoid nesting control structures deeper than 3 levels.
-* Prefer early returns to reduce nesting.
+* Functions must have a single point of exit: one `return`, at the end of
+  the function (MISRA C:2012 Rule 15.5). Do not use early returns.
 * Each function must have a single, clearly defined responsibility.
 * Functions must be declared at file scope unless required in a header.
 
-## 10. Minimize scope
+## 9. Minimize Scope
 
 Only expose what is necessary. Use `static` for private file-scope functions and
-variables.
+variables — see Section 4.1.4 for the required naming and the rule against
+plain (non-static) global variables.
 
-## 11. Preprocessor Usage
+## 10. Preprocessor Usage
 
 * Avoid macros where inline functions suffice.
 * Parenthesize macro parameters:
@@ -373,15 +404,14 @@ variables.
 #define MAX(a,b) ((a) > (b) ? (a) : (b))
 ```
 
-## 12. Error Handling
+## 11. Error Handling
 
 * Functions that may fail must return a status code.
 * The success value must be explicitly defined as 0.
 * Status codes must use a module/system-specific enum type:
 
 ```
-typedef enum
-{
+typedef enum {
     ADC_STATUS_OK = 0,
     ADC_STATUS_INVALID_PARAM,
     ADC_STATUS_TIMEOUT,
@@ -393,8 +423,11 @@ typedef enum
 * Input parameters must be validated at the beginning of the function.
 * Functions that cannot fail must return `void`.
 
-## 13. Tooling
+## 12. Tooling
 
-All formatting must be compatible with the project's formatter 
-[configuration](.clang-format). Contributors must not manually reformat code in
-ways that conflict with the formatter.
+All formatting (indentation, braces, spacing, line length, alignment, include
+ordering, etc.) is fully delegated to [clang-format](.clang-format). This
+guide does not document formatting rules directly — the `.clang-format`
+configuration is the single source of truth. Run `make format` before
+committing. Contributors must not manually reformat code in ways that
+conflict with the formatter's output.
