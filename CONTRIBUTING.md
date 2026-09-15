@@ -6,44 +6,88 @@
 Thank you for considering contributing! We welcome contributions of all kinds:
 code, documentation, bug reports, or ideas.
 
-## Getting Started
+## One-Time Setup
 
-1. **Fork the repository**
-   This creates a copy in your GitHub account so you can make changes safely.
-   
-2. **Clone your fork**
+This needs to be done only once.
 
-   ```bash
-   git clone https://github.com/rtsworks/lintra.git
-   cd lintra
-   ```
+1. **Fork the repository** — go to the
+   [lintra repository](https://github.com/rtsworks/lintra) on GitHub and
+   click **Fork**. This creates a copy in your own GitHub account that you
+   can push to.
+2. **Clone your fork and configure the upstream remote:**
 
-3. **Create a branch**
+```bash
+# Clone your fork (replace <your-username>)
+git clone git@github.com:<your-username>/lintra.git
+cd lintra
 
-   ```bash
-   git checkout -b feature/new-command
-   ```
+# Add the original repository as upstream
+git remote add upstream git@github.com:rtsworks/lintra.git
 
-   Follow the [Branch Naming Guidelines](.github/BRANCH_NAMING_GUIDELINES.md).
+# Create a local dev branch tracking upstream/dev
+git fetch upstream
+git checkout -b dev upstream/dev
+git push origin dev
+```
 
-4. **Make changes & commit**
-   - Follow project [C Style Guide](C_STYLE_GUIDE.md).
-   - Follow the [Commit Message Guidelines](.github/COMMIT_MESSAGE_GUIDELINES.md).
+## Start a New Feature
 
-5. **Push your branch**
+Repeat this for every feature or fix, starting from an up-to-date `dev`:
 
-   ```bash
-   git push origin feature/new-command
-   ```
+```bash
+# Sync your local dev with upstream first
+git checkout dev
+git fetch upstream
+git rebase upstream/dev
+git push origin dev
 
-6. **Open a Pull Request**
-   - Go to your fork on GitHub and click **"Compare & pull request"**.
-   - Add a title and description following the [Pull Request Guidelines](.github/PULL_REQUEST_GUIDELINES.md).
-   - Click **"Create pull request"** and fill out the Pull Request Template.
+# Then branch off it
+git checkout -b feature/my-feature
+```
+
+Follow the [Branch Naming Guidelines](.github/BRANCH_NAMING_GUIDELINES.md)
+for the prefix (`feature/`, `bugfix/`, `docs/`, `chore/`, `refactor/`,
+`test/`, `perf/`) and naming.
+
+## Work on Your Branch
+
+```bash
+git add .
+git commit -m "feat(scope): describe your change"
+git push origin feature/my-feature
+```
+
+- Follow the project [C Style Guide](C_STYLE_GUIDE.md).
+- Follow the [Commit Message Guidelines](.github/COMMIT_MESSAGE_GUIDELINES.md)
+  (Conventional Commits, 50/72 rule).
+- Run `make format` before committing.
+
+## Keep Your Branch Up to Date
+
+If `dev` moves upstream while your branch is still open:
+
+```bash
+git fetch upstream
+git checkout feature/my-feature
+git rebase upstream/dev
+git push origin feature/my-feature --force-with-lease
+```
+
+## Open a Pull Request
+
+Once your feature is ready:
+
+1. Go to your fork on GitHub and click **Compare & pull request**.
+2. Confirm the base is `dev` on `rtsworks/lintra`, and compare is your branch.
+3. Give the PR title a [Conventional Commits] type — it becomes the merge
+   commit message. See the [Pull Request Guidelines](.github/PULL_REQUEST_GUIDELINES.md).
+4. Fill out the Pull Request template and click **Create pull request**.
+
+[Conventional Commits]: https://www.conventionalcommits.org/
 
 ## Reporting Issues
 
-1. **Search existing issues before creating a new one.**
+1. Search existing issues before creating a new one.
 2. Go to the [Issue](https://github.com/rtsworks/lintra/issues) tab and click
    **New issue**.
 3. Choose one of the existing templates:
