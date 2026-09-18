@@ -105,33 +105,17 @@ CPPCHECK_FLAGS += -j$(CPPCHECK_THREADS)
 # Path to the local ceedling folder.
 CEEDLING := vendor/ceedling/bin/ceedling
 
+# --------------------------------- Doxygen ---------------------------------- #
+
+# Path to the Doxygen configuration file.
+DOXYFILE := doxygen/Doxyfile
+# Doxygen HTML output directory. Must match Doxyfile's OUTPUT_DIRECTORY.
+DOXYGEN_OUTPUT := $(BUILD_ROOT)/doxygen
+
 # ------------------------------- Make targets ------------------------------- #
 
-# Ensure workflow targets are not confused with files.
-.PHONY: all lint test build clean format
-
-# Make lint → test → build workflow. Stop the workflow when any step fails.
-# Default make target: Run the build prerequisite.
-all: build
-# Build target runs the test prerequisite.
-build: test
-# Test target runs lint prerequisite.
-test: lint
-# Lint target runs format prerequisite.
-lint: format
-
-# Run static analysis with CPPCheck using the configured MISRA and thread-safety
-# addons.
-lint: | $(CPPCHECK_CACHE)
-	cppcheck $(CPPCHECK_FLAGS) $(SRC_DIR)
-
-# Format all source and header files in-place using clang-format.
-format:
-	clang-format -i $(FMT_FILES)
-
-# Run Ceedling tests + gcovr coverage tool.
-test:
-	ruby $(CEEDLING) gcov:all
+# Ensure targets are not confused with files.
+.PHONY: build clean format lint test docs
 
 # Build the project binary.
 build: $(BIN_DIR)/$(TARGET)
@@ -146,7 +130,7 @@ $(BUILD_DIR)/%.o: $(SRC_DIR)/%.c | $(BUILD_DIR)
 	$(CC) $(CPPFLAGS) $(CFLAGS) -c $< -o $@
 
 # Create the directories below when asked.
-$(BIN_DIR) $(BUILD_DIR) $(CPPCHECK_CACHE):
+$(BIN_DIR) $(BUILD_DIR) $(CPPCHECK_CACHE) $(DOXYGEN_OUTPUT):
 	mkdir -p $@
 
 # Clean up the project. 'clobber' removes Ceedling build artifacts and
@@ -155,6 +139,23 @@ clean:
 	ruby $(CEEDLING) clobber
 	rm -rf $(BUILD_ROOT)
 	rm -rf $(BIN_ROOT)
+
+# Format all source and header files in-place using clang-format.
+format:
+	clang-format -i $(FMT_FILES)
+
+# Run static analysis with CPPCheck using the configured MISRA and thread-safety
+# addons.
+lint: | $(CPPCHECK_CACHE)
+	cppcheck $(CPPCHECK_FLAGS) $(SRC_DIR)
+
+# Run Ceedling tests + gcovr coverage tool.
+test:
+	ruby $(CEEDLING) gcov:all
+
+# Generate documentation using Doxygen.
+docs: | $(DOXYGEN_OUTPUT)
+	doxygen $(DOXYFILE)
 
 # Include .d files to ensure make detects changes in .h files.
 -include $(DEPS)
