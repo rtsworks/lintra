@@ -1,14 +1,18 @@
 /* Copyright (c) 2025 Daniel Rossinsky (https://github.com/rtsworks) */
 /* SPDX-License-Identifier: MIT                                      */
 
-/* Standard library includes */
+/* --------------------------- STANDARD INCLUDES ---------------------------- */
+
 #include <inttypes.h>
 #include <stdint.h>
 #include <stdio.h>
 
-/* User code includes */
+/* ----------------------------- USER INCLUDES ------------------------------ */
+
 #include "led/led.h"
 #include "util/calc.h"
+
+/* ---------------------------- PUBLIC FUNCTIONS ---------------------------- */
 
 int main(void)
 {
@@ -21,9 +25,17 @@ int main(void)
     led_off();
     int state = led_state();
 
+    /* cppcheck-suppress misra-c2012-21.6 */
+    /* The demo program prints its results to stdout. */
     (void)printf("add: %" PRIu32 "\n", add);
+    /* cppcheck-suppress misra-c2012-21.6 */
+    /* The demo program prints its results to stdout. */
     (void)printf("sub: %" PRIu32 "\n", sub);
+    /* cppcheck-suppress misra-c2012-21.6 */
+    /* The demo program prints its results to stdout. */
     (void)printf("mul: %" PRIu32 "\n", mul);
+    /* cppcheck-suppress misra-c2012-21.6 */
+    /* The demo program prints its results to stdout. */
     (void)printf("state: %d\n", state);
 
     return 0;

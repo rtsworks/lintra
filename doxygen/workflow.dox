@@ -1,0 +1,24 @@
+/* Copyright (c) 2025 Daniel Rossinsky (https://github.com/rtsworks) */
+/* SPDX-License-Identifier: MIT                                      */
+
+/**
+ * @page workflow Development workflow
+ * @brief The make targets used to check, test, build and document the code.
+ *
+ * @section wf_stages Stages
+ *
+ * Lintra provides the following makefile targets:
+ *
+ * | Target        | Purpose                                            |
+ * |---------------|----------------------------------------------------|
+ * | `make format` | Format the sources with clang-format               |
+ * | `make lint`   | Check MISRA C:2012 compliance with cppcheck        |
+ * | `make test`   | Run the unit tests with Ceedling and gather coverage |
+ * | `make build`  | Build the project with strict compiler flags       |
+ * | `make docs`   | Generate this documentation with Doxygen           |
+ *
+ * @section wf_docs Documenting code
+ *
+ * Public headers are documented with Doxygen. Groups, pages and the main page
+ * live in the `doxygen/` folder.
+ */

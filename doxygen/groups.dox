@@ -1,0 +1,12 @@
+/* Copyright (c) 2025 Daniel Rossinsky (https://github.com/rtsworks) */
+/* SPDX-License-Identifier: MIT                                      */
+
+/**
+ * @defgroup hal Hardware Abstraction Layer
+ * @brief Interfaces to the hardware, mockable in unit tests.
+ */
+
+/**
+ * @defgroup util Utilities
+ * @brief General purpose helpers with no hardware dependencies.
+ */

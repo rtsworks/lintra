@@ -1,0 +1,27 @@
+/* Copyright (c) 2025 Daniel Rossinsky (https://github.com/rtsworks) */
+/* SPDX-License-Identifier: MIT                                      */
+
+/**
+ * @page architecture Architecture
+ * @brief How the modules are layered and how they depend on each other.
+ *
+ * @section arch_layers Layers
+ *
+ * The code is split into layers, each one a group in this reference:
+ *
+ * - @ref hal - the only layer that talks to hardware.
+ * - @ref util - pure helpers with no hardware dependency.
+ * - @ref led - a driver that uses @ref hal_gpio.
+ *
+ * @section arch_deps Dependencies
+ *
+ * - @ref led depends on @ref hal_gpio.
+ * - @ref util_calc depends on @ref util_mul.
+ * - Nothing in @ref util depends on @ref hal.
+ *
+ * @section arch_testing Testing
+ *
+ * The hardware abstraction layer is replaced by generated mocks in unit
+ * tests, so modules built on top of it, such as @ref led, run on the host
+ * without hardware.
+ */

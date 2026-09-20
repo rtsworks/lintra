@@ -3,11 +3,37 @@
 
 /*******************************************************************************
  * @file
+ * @ingroup hal_gpio
  * @brief Mockable GPIO HAL.
  ******************************************************************************/
 
 #ifndef HAL_GPIO_H
 #define HAL_GPIO_H
+
+/* --------------------------- STANDARD INCLUDES ---------------------------- */
+
+/* ----------------------------- USER INCLUDES ------------------------------ */
+
+/**
+ * @brief Mockable GPIO HAL.
+ * @defgroup hal_gpio GPIO
+ * @ingroup hal
+ * @since 1.0.0
+ * @version 1.0.0
+ * @details Controls individual GPIO pins. Every pin must be initialized with
+ *          @ref hal_gpio_pin_init before it is written or read.
+ *
+ * @par Example
+ * @code
+ * hal_gpio_pin_init(GPIO_PIN_0, GPIO_PIN_OUT);
+ * hal_gpio_pin_write(GPIO_PIN_0, GPIO_PIN_HIGH);
+ * @endcode
+ * @{
+ */
+
+/* --------------------------------- MACROS --------------------------------- */
+
+/* --------------------------------- ENUMS ---------------------------------- */
 
 /** @brief HAL GPIO pin number enumeration. */
 typedef enum hal_gpio_pin_e {
@@ -29,27 +55,37 @@ typedef enum hal_gpio_value_e {
     GPIO_PIN_HIGH /**< GPIO value high */
 } hal_gpio_value_e;
 
+/* --------------------------------- TYPES ---------------------------------- */
+
+/* ------------------------- FUNCTION DECLARATIONS -------------------------- */
+
 /**
  * @brief Initialize the specified GPIO pin as input/output.
- * @param pin pin number from @ref hal_gpio_pin_e
- * @param dir direction from @ref hal_gpio_dir_e
+ * @details Call this once per pin, before any other function of this module is
+ *          used on that pin.
+ * @param[in] pin pin number from @ref hal_gpio_pin_e
+ * @param[in] dir direction from @ref hal_gpio_dir_e
  */
 void hal_gpio_pin_init(hal_gpio_pin_e pin, hal_gpio_dir_e dir);
 
 /**
- * @brief Write a value to the selected gpio pin.
- * @param pin   pin number from @ref hal_gpio_pin_e
- * @param value value from @ref hal_gpio_value_e
+ * @brief Write a value to the selected GPIO pin.
+ * @details The pin must have been initialized as an output with
+ *          @ref hal_gpio_pin_init.
+ * @param[in] pin   pin number from @ref hal_gpio_pin_e
+ * @param[in] value value from @ref hal_gpio_value_e
  */
 void hal_gpio_pin_write(hal_gpio_pin_e pin, hal_gpio_value_e value);
 
 /**
  * @brief Read the value of a GPIO pin.
- * @param pin pin number from @ref hal_gpio_pin_e.
+ * @param[in] pin pin number from @ref hal_gpio_pin_e
  * @return Value from @ref hal_gpio_value_e.
  * @retval GPIO_PIN_LOW  pin value is logic low
  * @retval GPIO_PIN_HIGH pin value is logic high
  */
 hal_gpio_value_e hal_gpio_pin_read(hal_gpio_pin_e pin);
+
+/** @} */
 
 #endif /* HAL_GPIO_H */

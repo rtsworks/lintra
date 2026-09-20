@@ -75,8 +75,8 @@ dedicated directory.
 
 ### 3.2 File Structure
 
-* Every `.c` file must follow the [C Template file](template.c)
-* Every `.h` file must follow the [H Template file](template.h)
+* Every `.c` file must follow the [C Template file](templates/template.c)
+* Every `.h` file must follow the [H Template file](templates/template.h)
 
 ### 3.3 File Placement
 
@@ -370,12 +370,13 @@ cannot carry one.
 
 * Use `/* */` for normal comments.
 * `//` single-line comments are not permitted.
-* Doxygen comments (`/** */`) are allowed only in `.h` files.
+* Doxygen comments (`/** */`) are allowed only in `.h` files and in the
+  `.dox` files under `doxygen/`.
 * Keep comments concise.
 
 ## 7. Documentation
 
-Use Doxygen to document only `.h` files. See [Doxygen guidelines](DOXYGEN_GUIDELINES.md)
+Use Doxygen to document `.h` files. See [Doxygen guidelines](DOXYGEN_GUIDELINES.md)
 for more details.
 
 ## 8. Functions

@@ -3,30 +3,23 @@
 
 /*******************************************************************************
  * @file
- * @ingroup util_mul
- * @brief Multiplier library.
+ * @ingroup <module_group_id>
+ * @brief <One sentence describing the header.>
  ******************************************************************************/
 
-#ifndef UTIL_MUL_H
-#define UTIL_MUL_H
+#ifndef TEMPLATE_H
+#define TEMPLATE_H
 
 /* --------------------------- STANDARD INCLUDES ---------------------------- */
-
-#include <stdint.h>
 
 /* ----------------------------- USER INCLUDES ------------------------------ */
 
 /**
- * @brief Integer multiplication.
- * @defgroup util_mul Multiplier
- * @ingroup util
- * @since 1.0.0
- * @version 1.0.0
- *
- * @par Example
- * @code
- * int32_t prod = util_mul(2, 5);
- * @endcode
+ * @brief <One sentence describing the module.>
+ * @defgroup <module_group_id> <Module title>
+ * @ingroup <layer_group_id>
+ * @since <first_version>
+ * @version <current_version>
  * @{
  */
 
@@ -38,14 +31,6 @@
 
 /* ------------------------- FUNCTION DECLARATIONS -------------------------- */
 
-/**
- * @brief Multiply one value with another.
- * @param[in] lhs left hand side value
- * @param[in] rhs right hand side value
- * @return The result of lhs * rhs.
- */
-int32_t util_mul(int32_t lhs, int32_t rhs);
-
 /** @} */
 
-#endif /* UTIL_MUL_H */
+#endif /* TEMPLATE_H */

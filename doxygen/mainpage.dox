@@ -1,0 +1,40 @@
+/* Copyright (c) 2025 Daniel Rossinsky (https://github.com/rtsworks) */
+/* SPDX-License-Identifier: MIT                                      */
+
+/**
+ * @mainpage Lintra
+ *
+ * **Lintra** is a C project template with a built-in, CI/CD-friendly toolkit
+ * that automates linting (MISRA C:2012 via cppcheck), testing (Ceedling) and
+ * building (make) with minimal setup.
+ *
+ * This is the API reference of the example modules shipped with the template.
+ *
+ * @section main_layers Layers and modules
+ *
+ * - @ref hal  - hardware abstraction layer
+ *   - @ref hal_gpio
+ * - @ref util - general purpose utilities
+ *   - @ref util_calc
+ *   - @ref util_mul
+ * - @ref led  - LED driver built on top of @ref hal_gpio
+ *
+ * @section main_guides Guides
+ *
+ * - @subpage architecture
+ * - @subpage workflow
+ *
+ * @section main_example Quick example
+ *
+ * @code
+ * #include "led/led.h"
+ *
+ * int main(void)
+ * {
+ *     led_init();
+ *     led_on();
+ *
+ *     return 0;
+ * }
+ * @endcode
+ */
