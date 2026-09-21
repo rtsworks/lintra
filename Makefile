@@ -116,7 +116,7 @@ DOXYGEN_OUTPUT := $(BUILD_ROOT)/doxygen
 # ------------------------------- Make targets ------------------------------- #
 
 # Ensure targets are not confused with files.
-.PHONY: build clean format lint test docs
+.PHONY: build clean format format-check lint test docs
 
 # Build the project binary.
 build: $(BIN_DIR)/$(TARGET)
@@ -144,6 +144,11 @@ clean:
 # Format all source and header files in-place using clang-format.
 format:
 	clang-format -i $(FMT_FILES)
+
+# Check the formatting of all source and header files without changing them.
+# Fails if any file would be reformatted, which makes it usable in CI.
+format-check:
+	clang-format --dry-run --Werror $(FMT_FILES)
 
 # Run static analysis with CPPCheck using the configured MISRA and thread-safety
 # addons.

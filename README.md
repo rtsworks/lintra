@@ -21,14 +21,15 @@ linting, testing, building, and documenting C projects with minimal setup.
 
 Lintra gives you one `make` target per tool:
 
-| Command       | What it does                                                |
-|---------------|-------------------------------------------------------------|
-| `make format` | Formats all sources in place with [clang-format].           |
-| `make lint`   | Enforces MISRA C:2012 guidelines via [cppcheck].            |
-| `make test`   | Runs unit tests with [ceedling] and collects coverage.      |
-| `make build`  | Builds the project with [make] using strict compiler flags. |
-| `make docs`   | Generates HTML API documentation with [doxygen].            |
-| `make clean`  | Removes all build, test, and documentation output.          |
+| Command             | What it does                                                |
+|---------------------|-------------------------------------------------------------|
+| `make format`       | Formats all sources in place with [clang-format].           |
+| `make format-check` | Checks the formatting without changing any file, for CI.    |
+| `make lint`         | Enforces MISRA C:2012 guidelines via [cppcheck].            |
+| `make test`         | Runs unit tests with [ceedling] and collects coverage.      |
+| `make build`        | Builds the project with [make] using strict compiler flags. |
+| `make docs`         | Generates HTML API documentation with [doxygen].            |
+| `make clean`        | Removes all build, test, and documentation output.          |
 
 The targets are independent, so you can run them in any order and wire them into
 CI however you like. Running `make` with no arguments runs `build`.
@@ -293,12 +294,13 @@ In your `lintra` project directory, run any of the targets described in the
 [toolkit](#toolkit) section:
 
 ```bash
-make format   # Format the sources
-make lint     # Static analysis (MISRA C:2012)
-make test     # Unit tests + coverage
-make build    # Build the executable (debug by default)
-make docs     # Generate the HTML documentation
-make clean    # Remove all generated output
+make format         # Format the sources
+make format-check   # Check the formatting without changing any file (for CI)
+make lint           # Static analysis (MISRA C:2012)
+make test           # Unit tests + coverage
+make build          # Build the executable (debug by default)
+make docs           # Generate the HTML documentation
+make clean          # Remove all generated output
 ```
 
 `build` accepts a build type, which selects the compiler flags and the output
