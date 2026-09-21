@@ -19,7 +19,7 @@ linting, testing, building, and documenting C projects with minimal setup.
 
 <a id="toolkit"></a>
 
-Lintra gives you one `make` target per tool, each of which fails fast:
+Lintra gives you one `make` target per tool:
 
 | Command       | What it does                                                |
 |---------------|-------------------------------------------------------------|
@@ -110,6 +110,11 @@ Windows users should install the following tools to run `lintra`:
 - [LLVM] — Provides `clang-format`, used to format the sources.
 - [Doxygen] — Used to generate the API documentation.
 
+Once the tools are installed, make sure each tool’s executable directory is added
+to your system’s **PATH**. The Python and Ruby installers offer an "Add to PATH"
+option that does this for you. Then open a **new** terminal, so that it picks up
+the updated **PATH**.
+
 Install `gcovr` via command line:
 
 ```bash
@@ -124,9 +129,6 @@ gem install ceedling -v 1.0.1
 
 `lintra` runs the copy of Ceedling vendored in `vendor/ceedling`, but the gem
 still has to be installed so that the Ruby gems it depends on are available.
-
-After installation, ensure that each tool’s executable directory is added to your
-system’s **PATH**.
 
 [MinGW]: https://nuwen.net/mingw.html
 [MSYS2]: https://www.msys2.org/
@@ -189,11 +191,12 @@ clang-format --version && \
 doxygen --version
 ```
 
-Then, build `lintra` as follows:
+Then, run every `lintra` target once to verify the whole toolchain, and
+finish with `make clean`:
 
 ```bash
 cd lintra
-make
+make format lint test build docs
 ```
 
 An executable should be created at `bin/debug/prog.bin`. Running it will print:
@@ -204,6 +207,12 @@ add: 20
 sub: 15
 mul: 10
 state: 0
+```
+
+Finally, remove the generated output:
+
+```bash
+make clean
 ```
 
 If you’ve reached this point, your setup is complete and ready to use.
@@ -225,9 +234,12 @@ lintra/
 ├── templates/   Starting point for new .c and .h files
 ├── vendor/      Third-party tools (see License)
 ├── images/      Images used by the documentation
+├── .github/     Issue and PR templates, contribution and security policies
 ├── .clang-format
 ├── Makefile
-└── project.yml  Ceedling configuration
+├── project.yml  Ceedling configuration
+└── *.md         README, C_STYLE_GUIDE, DOXYGEN_GUIDELINES, CONTRIBUTING,
+                 CHANGELOG, and LICENSE
 ```
 
 ### Where to put your code
@@ -295,9 +307,7 @@ Both the test and coverage reports are generated in XML and HTML formats.
 
 ### How to configure `lintra`
 
-You can configure `lintra`’s toolkit and workflow as needed.
-
-[Makefile]: https://github.com/rtsworks/lintra/blob/main/Makefile
+You can configure `lintra`’s toolkit as needed.
 
 #### Configuring the formatter
 
@@ -351,29 +361,11 @@ definitions live in the `.dox` files next to the Doxyfile. See the
 [Doxygen guidelines](DOXYGEN_GUIDELINES.md) for how code is documented and where
 each kind of documentation belongs.
 
-#### Changing the workflow
-
-Each stage is its own `make` target, so the order is yours to choose. To enforce
-a fixed order locally, declare the targets as prerequisites of one another in
-the `Make targets` section of the [Makefile]. For example, to make every build
-lint and test first:
-
-```make
-build: lint test
-```
+[Makefile]: https://github.com/rtsworks/lintra/blob/main/Makefile
 
 ## CI/CD integration
 
-Lintra ships no CI workflow of its own — the `make` targets are the integration
-point. Each one exits non-zero on failure, so a pipeline can run them directly:
-
-```yaml
-- run: make format && git diff --exit-code   # fails if formatting is needed
-- run: make lint
-- run: make test
-- run: make build
-- run: make docs
-```
+TODO: Work in progress
 
 ## Contributing
 
