@@ -3,37 +3,46 @@
 
 <div align="center">
 
-  <!-- Banner placeholder -->
   ![Lintra Banner](images/lintra-banner.png)
-  
+
   # C project starter & CI/CD-friendly toolkit
-  
-  <!-- Badge placeholder -->
+
   ![OS: Windows / Linux](https://img.shields.io/badge/OS-Windows%20%7C%20Linux-blue)
   [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE.md)
   ![Status: Active](https://img.shields.io/badge/status-active-brightgreen)
-  
+
 </div>
 
-<a id="workflow"></a>
 **Lintra** is a C project template with a built-in, CI/CD-friendly toolkit designed
-to streamline the development workflow of C projects. It automates linting, testing,
-and building C projects with minimal setup.
+to streamline the development workflow of C projects. It automates formatting,
+linting, testing, building, and documenting C projects with minimal setup.
 
-Lintra enforces a strict, fail-fast workflow composed of three stages:
+<a id="toolkit"></a>
 
-1. **Lint** — Enforces MISRA C:2012 guidelines via [cppcheck].  
-2. **Test** — Executes unit tests using [ceedling], automatically generating:
-   - Cobertura and HTML code coverage reports  
-   - JUnit and HTML test reports  
-   - Test runners and mocks  
-3. **Build** — Uses [make] to build the project with strict compilation flags.
+Lintra gives you one `make` target per tool, each of which fails fast:
 
+| Command       | What it does                                                |
+|---------------|-------------------------------------------------------------|
+| `make format` | Formats all sources in place with [clang-format].           |
+| `make lint`   | Enforces MISRA C:2012 guidelines via [cppcheck].            |
+| `make test`   | Runs unit tests with [ceedling] and collects coverage.      |
+| `make build`  | Builds the project with [make] using strict compiler flags. |
+| `make docs`   | Generates HTML API documentation with [doxygen].            |
+| `make clean`  | Removes all build, test, and documentation output.          |
+
+The targets are independent, so you can run them in any order and wire them into
+CI however you like. Running `make` with no arguments runs `build`.
+
+[clang-format]: https://clang.llvm.org/docs/ClangFormat.html
 [cppcheck]: https://cppcheck.sourceforge.io/
 [ceedling]: https://github.com/ThrowTheSwitch/Ceedling
 [make]: https://www.gnu.org/software/make/
+[doxygen]: https://www.doxygen.nl/
 
-If any stage fails, Lintra immediately halts the process.
+Alongside the toolkit, Lintra ships the conventions to go with it: a
+[C style guide](C_STYLE_GUIDE.md), [Doxygen guidelines](DOXYGEN_GUIDELINES.md),
+file [templates](templates/), and a set of GitHub issue, pull request, and
+contribution templates.
 
 ## Getting Started
 
@@ -67,17 +76,39 @@ it here, ensuring that the rest of the project remains entirely under the MIT li
 
 [here]: https://gitlab.com/MISRA/MISRA-C/MISRA-C-2012/tools/-/blob/main/misra_c_2012__headlines_for_cppcheck%20-%20AMD1+AMD2.txt?ref_type=heads
 
+### Tool versions
+
+The versions below are the ones `lintra` is currently developed and tested
+against. Newer versions generally work, but these are the known-good ones:
+
+| Tool           | Version   | Needed for                          |
+|----------------|-----------|-------------------------------------|
+| GCC            | 11.2.0    | Compiling the project and the tests |
+| GNU Make       | 4.3       | Running the toolkit                 |
+| Git            | 2.51.0    | Obtaining and versioning the code   |
+| Ruby           | 3.4.5     | Running Ceedling                    |
+| Ceedling       | 1.0.1     | Unit tests, mocks, coverage         |
+| Python         | 3.14.3    | Installing and running `gcovr`      |
+| gcovr          | 8.6       | Coverage reports                    |
+| Cppcheck       | 2.20.0    | MISRA C:2012 static analysis        |
+| clang-format   | 21.1.0    | Formatting the sources              |
+| Doxygen        | 1.18.0    | Generating the documentation        |
+
+The Ceedling version must match `:ceedling_version:` in `project.yml`.
+
 ### Windows Setup
 
 Windows users should install the following tools to run `lintra`:
 
-- [MinGW] — Provides the GCC compiler and [make] utility for building the project.  
+- [MinGW] — Provides the GCC compiler and [make] utility for building the project.
 - [MSYS2] — Offers a Unix-like shell environment required for the Makefile to run
-            properly.  
+            properly.
 - [python3] — Comes with pip3 on Windows, used to install `gcovr` for coverage
-              reports.  
-- [Ruby] — Required for running [Ceedling], the unit testing framework.  
+              reports.
+- [Ruby] — Required for running [Ceedling], the unit testing framework.
 - [Cppcheck] — Used to enforce MISRA C:2012 guidelines.
+- [LLVM] — Provides `clang-format`, used to format the sources.
+- [Doxygen] — Used to generate the API documentation.
 
 Install `gcovr` via command line:
 
@@ -88,17 +119,22 @@ pip3 install gcovr
 Install [Ceedling] via command line:
 
 ```bash
-gem install ceedling
+gem install ceedling -v 1.0.1
 ```
 
-After installation, ensure that each tool’s executable directory is added to your
-system’s **PATH**.  
+`lintra` runs the copy of Ceedling vendored in `vendor/ceedling`, but the gem
+still has to be installed so that the Ruby gems it depends on are available.
 
-[MinGW]: https://nuwen.net/mingw.html  
-[MSYS2]: https://www.msys2.org/  
-[python3]: https://www.python.org/downloads/windows/  
-[Ruby]: https://rubyinstaller.org/  
-[Cppcheck]: https://cppcheck.sourceforge.io/  
+After installation, ensure that each tool’s executable directory is added to your
+system’s **PATH**.
+
+[MinGW]: https://nuwen.net/mingw.html
+[MSYS2]: https://www.msys2.org/
+[python3]: https://www.python.org/downloads/windows/
+[Ruby]: https://rubyinstaller.org/
+[Cppcheck]: https://cppcheck.sourceforge.io/
+[LLVM]: https://releases.llvm.org/
+[Doxygen]: https://www.doxygen.nl/download.html
 
 ### Linux Setup
 
@@ -106,10 +142,11 @@ system’s **PATH**.
 
 Linux users should install the following tools to run `lintra`:
 
-- Install build essentials, Git, Ruby, Python, and pip:
+- Install build essentials, Git, Ruby, Python, pip, clang-format, and Doxygen:
 
 ```bash
-sudo apt update && sudo apt install build-essential git ruby-full python3 python3-pip
+sudo apt update && sudo apt install build-essential git ruby-full python3 \
+     python3-pip clang-format doxygen
 ```
 
 - Install `gcovr`:
@@ -121,7 +158,7 @@ sudo pip3 install gcovr
 - Install [Ceedling]:
 
 ```bash
-sudo gem install ceedling
+sudo gem install ceedling -v 1.0.1
 ```
 
 - Install cppcheck:
@@ -129,9 +166,13 @@ sudo gem install ceedling
 ```bash
 git clone https://github.com/danmar/cppcheck.git && \
 cd cppcheck && \
-git checkout 2.18.x && \
+git checkout 2.20.x && \
 sudo make FILESDIR=/usr/share/cppcheck install
 ```
+
+**NOTE:** Distribution packages are often older than the versions listed under
+[Tool versions](#tool-versions). Check them with the command in the next section
+and install newer ones manually where your distribution lags behind.
 
 ### Verifying the Setup
 
@@ -143,10 +184,12 @@ make --version && \
 git --version && \
 ruby --version && \
 cppcheck --version && \
-gcovr --version
+gcovr --version && \
+clang-format --version && \
+doxygen --version
 ```
 
-Then, run `lintra` as follows:
+Then, build `lintra` as follows:
 
 ```bash
 cd lintra
@@ -156,7 +199,7 @@ make
 An executable should be created at `bin/debug/prog.bin`. Running it will print:
 
 ```bash
-$ ./bin/debug/prog.bin 
+$ ./bin/debug/prog.bin
 add: 20
 sub: 15
 mul: 10
@@ -167,43 +210,75 @@ If you’ve reached this point, your setup is complete and ready to use.
 
 ## Howto
 
-This section explains how to use `lintra` after the setup is complete. If you 
+This section explains how to use `lintra` after the setup is complete. If you
 haven’t set up `lintra` yet, see [Getting Started](#getting-started).
+
+### Project layout
+
+```
+lintra/
+├── include/     Public headers, grouped by layer or category
+├── src/         Sources and private headers
+├── test/        Unit tests (test/support/ holds generated mocks)
+├── cppcheck/    Linter configuration (MISRA, thread safety, type sizes)
+├── doxygen/     Doxyfile, HTML header, and documentation pages (.dox)
+├── templates/   Starting point for new .c and .h files
+├── vendor/      Third-party tools (see License)
+├── images/      Images used by the documentation
+├── .clang-format
+├── Makefile
+└── project.yml  Ceedling configuration
+```
 
 ### Where to put your code
 
 By default, `lintra` expects your project to be organized into three directories:
 
-1. **Source files** — `.c` files in `src/`
-2. **Header files** — `.h` files in `include/`
+1. **Source files** — `.c` files and private headers in `src/`
+2. **Header files** — public `.h` files in `include/`
 3. **Test files** — `.c` files in `test/`
 
-You can also create subfolders inside each directory to organize modules. An
-example project is included with `lintra`, which uses all three directories 
-and can be deleted after completing the setup.
+You can also create subfolders inside each directory to organize modules. See
+the [C style guide](C_STYLE_GUIDE.md) for how modules are named and when they
+get a directory of their own. An example project is included with `lintra`,
+which uses all three directories and can be deleted after completing the setup.
 
-> **WARNING:**  
-> The `test/support` folder is reserved for mock files generated by **CMock**  
-> and should **not** be used by the developer. Its contents are also excluded  
+New files should start from [templates/template.c](templates/template.c) and
+[templates/template.h](templates/template.h), which carry the section layout and
+documentation blocks the guides expect.
+
+> **WARNING:**
+> The `test/support` folder is reserved for mock files generated by **CMock**
+> and should **not** be used by the developer. Its contents are also excluded
 > from version control via `.gitignore`.
 
 ### How to run `lintra`
 
-In your `lintra` project directory, run:
+In your `lintra` project directory, run any of the targets described in the
+[toolkit](#toolkit) section:
+
+```bash
+make format   # Format the sources
+make lint     # Static analysis (MISRA C:2012)
+make test     # Unit tests + coverage
+make build    # Build the executable (debug by default)
+make docs     # Generate the HTML documentation
+make clean    # Remove all generated output
+```
+
+`build` accepts a build type, which selects the compiler flags and the output
+directory:
 
 ```bash
 # For debug build
-make
+make build
 # For release build
-make BUILD=release
+make build BUILD=release
 ```
-
-This runs `lintra`’s full lint → test → build workflow as described in 
-the [workflow](#workflow) section.
 
 ### Where to find `lintra` output
 
-The output files are organized by build type:
+The build output is organized by build type:
 
 - **Debug build** — `bin/debug/` contains the executable and map file,
                     while `build/debug/` contains the build artifacts.
@@ -214,12 +289,23 @@ For both builds:
 
 - Test reports are located in `build/ceedling/artifacts/gcov`
 - Coverage reports are located in `build/ceedling/artifacts/gcov/gcovr`
+- API documentation is located in `build/doxygen/html` (open `index.html`)
 
 Both the test and coverage reports are generated in XML and HTML formats.
 
 ### How to configure `lintra`
 
-You can configure `lintra`’s toolkit and workflow as needed:
+You can configure `lintra`’s toolkit and workflow as needed.
+
+[Makefile]: https://github.com/rtsworks/lintra/blob/main/Makefile
+
+#### Configuring the formatter
+
+`lintra` uses clang-format to format the sources, configured in
+[.clang-format](.clang-format). The [C style guide](C_STYLE_GUIDE.md)
+deliberately documents no formatting rules — the `.clang-format` file is the
+single source of truth for them. The set of files that gets formatted is the
+`FMT_FILES` variable in the [Makefile].
 
 #### Configuring the linter
 
@@ -232,8 +318,6 @@ for static analysis:
 
 There are additional flags apart from the files above which you may choose
 to keep, modify, or remove.
-
-[Makefile]: https://github.com/rtsworks/lintra/blob/main/Makefile
 
 #### Configuring the test framework
 
@@ -257,50 +341,71 @@ sections:
 - `Compiler config` - Decide what compiler, and compiler flags are used
                       for release and debug builds.
 - `Make targets` - The **build** target controls how the executable will
-                   be created
+                   be created.
 
-[Makefile]: https://github.com/rtsworks/lintra/blob/main/Makefile
+#### Configuring the documentation
+
+`lintra` uses Doxygen, configured in `doxygen/Doxyfile`. The API reference is
+built from the public headers, while the main page, topic pages, and group
+definitions live in the `.dox` files next to the Doxyfile. See the
+[Doxygen guidelines](DOXYGEN_GUIDELINES.md) for how code is documented and where
+each kind of documentation belongs.
 
 #### Changing the workflow
 
-The default `lintra` workflow runs lint → test → build automatically. This is
-controlled by the `Make targets` section in the [Makefile]:
+Each stage is its own `make` target, so the order is yours to choose. To enforce
+a fixed order locally, declare the targets as prerequisites of one another in
+the `Make targets` section of the [Makefile]. For example, to make every build
+lint and test first:
 
-```bash
-# Make lint → test → build workflow. Stop the workflow when any step fails.
-# Default make target: Run the build prerequisite.
-all: build
-# Build target runs the test prerequisite.
-build: test
-# Test target runs lint prerequisite.
-test: lint
+```make
+build: lint test
 ```
-
-If you prefer to run each step manually, you can remove or reorder these lines.
-For example, keeping only `all: build` will make it build the project by default
-without running lint or tests first.
-
-[Makefile]: https://github.com/rtsworks/lintra/blob/main/Makefile
 
 ## CI/CD integration
 
-TODO: add later
+Lintra ships no CI workflow of its own — the `make` targets are the integration
+point. Each one exits non-zero on failure, so a pipeline can run them directly:
+
+```yaml
+- run: make format && git diff --exit-code   # fails if formatting is needed
+- run: make lint
+- run: make test
+- run: make build
+- run: make docs
+```
 
 ## Contributing
 
 We welcome contributions! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for
 details on our code of conduct and instructions for submitting pull requests.
+Code is expected to follow the [C style guide](C_STYLE_GUIDE.md) and the
+[Doxygen guidelines](DOXYGEN_GUIDELINES.md).
 
 ## Versioning
 
 We use [SemVer](http://semver.org/) for versioning. For the versions available,
-see the [tags on this repository](https://github.com/rtsworks/lintra/tags). 
+see the [tags on this repository](https://github.com/rtsworks/lintra/tags).
+Notable changes are recorded in the [changelog](CHANGELOG.md).
 
 ## License
 
 Most of this project is licensed under the MIT License — see the [LICENSE.md](LICENSE.md)
 file for details.
 
-The Code of Conduct is adapted from the Contributor Covenant, version 3.0, 
-which is licensed under the CC-BY-SA-4.0 License — see the [CODE_OF_CONDUCT.md](.github/CODE_OF_CONDUCT.md) 
+The Code of Conduct is adapted from the Contributor Covenant, version 3.0,
+which is licensed under the CC-BY-SA-4.0 License — see the [CODE_OF_CONDUCT.md](.github/CODE_OF_CONDUCT.md)
 file for details.
+
+The `vendor/` directory contains third-party software. Each component is MIT
+licensed, so the whole repository stays under compatible terms:
+
+| Component             | Used for                        |
+|-----------------------|---------------------------------|
+| [Ceedling]            | Unit testing, mocking, coverage |
+| [doxygen-awesome-css] | Documentation theme             |
+| [PlantUML]            | Diagrams in the documentation   |
+
+[Ceedling]: https://github.com/ThrowTheSwitch/Ceedling
+[doxygen-awesome-css]: https://github.com/jothepro/doxygen-awesome-css
+[PlantUML]: https://plantuml.com/
