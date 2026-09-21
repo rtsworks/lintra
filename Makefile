@@ -52,6 +52,12 @@ CFLAGS.debug := -O0 -ggdb3
 CFLAGS := $(CFLAGS.$(BUILD)) -std=c99 -pedantic -Wall -Wextra -Werror        \
 							 -Winline -Wconversion -Wpadded -Wshadow -Wundef \
 							 -Wdouble-promotion -fno-common -fstack-usage    \
+							 -Wstrict-prototypes -Wmissing-prototypes        \
+							 -Wold-style-definition -Wcast-qual              \
+							 -Wwrite-strings -Wswitch-default                \
+							 -Wredundant-decls -Wvla -Wfloat-equal           \
+							 -Wlogical-op -Wduplicated-cond                  \
+							 -Wduplicated-branches                           \
 							 -ffunction-sections -fdata-sections -pthread
 # Release build preprocessor flags.
 CPPFLAGS.release := -DNDEBUG
