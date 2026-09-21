@@ -258,7 +258,7 @@ lintra/
 ├── templates/   Starting point for new .c and .h files
 ├── vendor/      Third-party tools (see License)
 ├── images/      Images used by the documentation
-├── .github/     Issue and PR templates, contribution and security policies
+├── .github/     Issue and PR templates, policies, and the CI workflow
 ├── .clang-format
 ├── Makefile
 ├── project.yml  Ceedling configuration
@@ -390,7 +390,30 @@ each kind of documentation belongs.
 
 ## CI/CD integration
 
-TODO: Work in progress
+Lintra does not depend on any particular CI system. The `make` targets are the
+integration point, so any pipeline can run them directly. For GitHub, the
+repository ships a ready-to-use workflow,
+[.github/workflows/ci.yml](.github/workflows/ci.yml), which installs the tools at
+the same versions as the [Linux Setup](#linux-setup) and runs the targets below.
+On any other CI system, run the same commands:
+
+```bash
+make format-check   # Fails if any file needs formatting
+make lint           # Fails on any MISRA C:2012 violation
+make test           # Fails on a failing test, and produces the reports below
+make build          # Fails if the project does not compile
+make docs           # Fails on any documentation warning
+```
+
+`make test` also produces machine-readable reports that a CI system can publish
+as test results and coverage, instead of relying only on the exit code:
+
+- **Test results** (JUnit XML): `build/ceedling/artifacts/gcov/tests_report.xml`
+- **Coverage** (Cobertura XML): `build/ceedling/artifacts/gcov/gcovr/coverage_report.xml`
+
+HTML versions of both reports are generated next to them, and the generated API
+documentation is in `build/doxygen/html`. Configure your pipeline to collect
+these files even when a step fails, so a failing run still shows its results.
 
 ## Contributing
 

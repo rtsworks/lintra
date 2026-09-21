@@ -1,0 +1,75 @@
+# Copyright (c) 2025 Daniel Rossinsky (https://github.com/rtsworks)
+# SPDX-License-Identifier: MIT
+
+name: CI
+
+on:
+  push:
+    branches: [main, dev]
+  pull_request:
+    branches: [main, dev]
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "3.3"
+
+      - name: Install gcovr and clang-format
+        run: pip install gcovr==8.6 clang-format==21.1.0
+
+      - name: Install Ceedling and gdb
+        run: |
+          gem install ceedling -v 1.0.1
+          sudo apt-get update
+          sudo apt-get install -y gdb
+
+      - name: Install Doxygen
+        run: |
+          curl -sLO https://github.com/doxygen/doxygen/releases/download/Release_1_18_0/doxygen-1.18.0.linux.bin.tar.gz
+          sudo tar xzf doxygen-1.18.0.linux.bin.tar.gz -C /opt
+          sudo ln -sf /opt/doxygen-1.18.0/bin/doxygen /usr/local/bin/doxygen
+
+      - name: Cache cppcheck
+        id: cppcheck-cache
+        uses: actions/cache@v4
+        with:
+          path: ~/cppcheck
+          key: cppcheck-2.20.0-${{ runner.os }}-${{ runner.arch }}
+
+      - name: Build cppcheck
+        if: steps.cppcheck-cache.outputs.cache-hit != 'true'
+        run: |
+          git clone --depth 1 --branch 2.20.0 https://github.com/danmar/cppcheck.git /tmp/cppcheck
+          cd /tmp/cppcheck
+          make -j"$(nproc)" FILESDIR="$HOME/cppcheck/share/cppcheck"
+          make install PREFIX="$HOME/cppcheck" FILESDIR="$HOME/cppcheck/share/cppcheck"
+
+      - name: Add cppcheck to PATH
+        run: echo "$HOME/cppcheck/bin" >> "$GITHUB_PATH"
+
+      - name: Format check
+        run: make format-check
+
+      - name: Lint
+        run: make lint
+
+      - name: Test
+        run: make test
+
+      - name: Build
+        run: make build
+
+      - name: Docs
+        run: make docs
