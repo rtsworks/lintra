@@ -79,7 +79,9 @@ it here, ensuring that the rest of the project remains entirely under the MIT li
 ### Tool versions
 
 The versions below are the ones `lintra` is currently developed and tested
-against. Newer versions generally work, but these are the known-good ones:
+against. Newer versions generally work, but these are the known-good ones.
+
+#### Windows
 
 | Tool           | Version   | Needed for                          |
 |----------------|-----------|-------------------------------------|
@@ -89,6 +91,21 @@ against. Newer versions generally work, but these are the known-good ones:
 | Ruby           | 3.4.5     | Running Ceedling                    |
 | Ceedling       | 1.0.1     | Unit tests, mocks, coverage         |
 | Python         | 3.14.3    | Installing and running `gcovr`      |
+| gcovr          | 8.6       | Coverage reports                    |
+| Cppcheck       | 2.20.0    | MISRA C:2012 static analysis        |
+| clang-format   | 21.1.0    | Formatting the sources              |
+| Doxygen        | 1.18.0    | Generating the documentation        |
+
+#### Linux Mint
+
+| Tool           | Version   | Needed for                          |
+|----------------|-----------|-------------------------------------|
+| GCC            | 11.4.0    | Compiling the project and the tests |
+| GNU Make       | 4.3       | Running the toolkit                 |
+| Git            | 2.34.1    | Obtaining and versioning the code   |
+| Ruby           | 3.0.2     | Running Ceedling                    |
+| Ceedling       | 1.0.1     | Unit tests, mocks, coverage         |
+| Python         | 3.10.12   | Installing and running `gcovr`      |
 | gcovr          | 8.6       | Coverage reports                    |
 | Cppcheck       | 2.20.0    | MISRA C:2012 static analysis        |
 | clang-format   | 21.1.0    | Formatting the sources              |
@@ -140,21 +157,31 @@ still has to be installed so that the Ruby gems it depends on are available.
 
 ### Linux Setup
 
-**NOTE:** The instructions below were tested on mint/ubuntu.
+**NOTE:** The instructions below were tested on Linux Mint. The versions they
+produce are listed under [Tool versions](#tool-versions).
 
 Linux users should install the following tools to run `lintra`:
 
-- Install build essentials, Git, Ruby, Python, pip, clang-format, and Doxygen:
+- Install build essentials, Ruby, and pip:
 
 ```bash
-sudo apt update && sudo apt install build-essential git ruby-full python3 \
-     python3-pip clang-format doxygen
+sudo apt install -y build-essential ruby-full python3-pip
 ```
 
-- Install `gcovr`:
+- Install [Doxygen]:
 
 ```bash
-sudo pip3 install gcovr
+curl -sLO https://github.com/doxygen/doxygen/releases/download/Release_1_18_0/doxygen-1.18.0.linux.bin.tar.gz
+sudo tar xzf doxygen-1.18.0.linux.bin.tar.gz -C /opt
+sudo ln -sf /opt/doxygen-1.18.0/bin/doxygen /usr/local/bin/doxygen
+rm doxygen-1.18.0.linux.bin.tar.gz
+```
+
+- Install `gcovr` and `clang-format`:
+
+```bash
+sudo pip3 install gcovr==8.6
+sudo pip3 install clang-format==21.1.0
 ```
 
 - Install [Ceedling]:
@@ -166,15 +193,11 @@ sudo gem install ceedling -v 1.0.1
 - Install cppcheck:
 
 ```bash
-git clone https://github.com/danmar/cppcheck.git && \
-cd cppcheck && \
+git clone https://github.com/danmar/cppcheck.git /tmp/cppcheck && \
+cd /tmp/cppcheck && \
 git checkout 2.20.x && \
 sudo make FILESDIR=/usr/share/cppcheck install
 ```
-
-**NOTE:** Distribution packages are often older than the versions listed under
-[Tool versions](#tool-versions). Check them with the command in the next section
-and install newer ones manually where your distribution lags behind.
 
 ### Verifying the Setup
 
