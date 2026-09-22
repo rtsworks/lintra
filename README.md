@@ -10,6 +10,7 @@
   ![OS: Windows / Linux](https://img.shields.io/badge/OS-Windows%20%7C%20Linux-blue)
   [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE.md)
   ![Status: Active](https://img.shields.io/badge/status-active-brightgreen)
+  [![CI](https://github.com/rtsworks/lintra/actions/workflows/ci.yml/badge.svg)](https://github.com/rtsworks/lintra/actions/workflows/ci.yml)
 
 </div>
 
