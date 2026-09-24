@@ -97,6 +97,7 @@ against. Newer versions generally work, but these are the known-good ones.
 | Cppcheck       | 2.20.0    | MISRA C:2012 static analysis        |
 | clang-format   | 21.1.0    | Formatting the sources              |
 | Doxygen        | 1.18.0    | Generating the documentation        |
+| gitlint        | 0.19.1    | Checking commit message format      |
 
 #### Linux Mint
 
@@ -112,6 +113,7 @@ against. Newer versions generally work, but these are the known-good ones.
 | Cppcheck       | 2.20.0    | MISRA C:2012 static analysis        |
 | clang-format   | 21.1.0    | Formatting the sources              |
 | Doxygen        | 1.18.0    | Generating the documentation        |
+| gitlint        | 0.19.1    | Checking commit message format      |
 
 The Ceedling version must match `:ceedling_version:` in `project.yml`.
 
@@ -149,6 +151,13 @@ gem install ceedling -v 1.0.1
 `lintra` runs the copy of Ceedling vendored in `vendor/ceedling`, but the gem
 still has to be installed so that the Ruby gems it depends on are available.
 
+Install [gitlint], used to check commit messages against the
+[Commit Message Guidelines](.github/COMMIT_MESSAGE_GUIDELINES.md):
+
+```bash
+pip3 install gitlint
+```
+
 [MinGW]: https://nuwen.net/mingw.html
 [MSYS2]: https://www.msys2.org/
 [python3]: https://www.python.org/downloads/windows/
@@ -156,6 +165,8 @@ still has to be installed so that the Ruby gems it depends on are available.
 [Cppcheck]: https://cppcheck.sourceforge.io/
 [LLVM]: https://releases.llvm.org/
 [Doxygen]: https://www.doxygen.nl/download.html
+[gitlint]: https://jorisroovers.com/gitlint/
+[Conventional Commits]: https://www.conventionalcommits.org/
 
 ### Linux Setup
 
@@ -184,6 +195,13 @@ rm doxygen-1.18.0.linux.bin.tar.gz
 ```bash
 sudo pip3 install gcovr==8.6
 sudo pip3 install clang-format==21.1.0
+```
+
+- Install [gitlint], used to check commit messages against the
+  [Commit Message Guidelines](.github/COMMIT_MESSAGE_GUIDELINES.md):
+
+```bash
+sudo pip3 install gitlint
 ```
 
 - Install [Ceedling]:
@@ -259,7 +277,7 @@ lintra/
 ├── templates/   Starting point for new .c and .h files
 ├── vendor/      Third-party tools (see License)
 ├── images/      Images used by the documentation
-├── .github/     Issue and PR templates, policies, and the CI workflow
+├── .github/     Issue and PR templates, policies, and the CI workflows
 ├── .clang-format
 ├── Makefile
 ├── project.yml  Ceedling configuration
@@ -393,9 +411,17 @@ each kind of documentation belongs.
 
 Lintra does not depend on any particular CI system. The `make` targets are the
 integration point, so any pipeline can run them directly. For GitHub, the
-repository ships a ready-to-use workflow,
-[.github/workflows/ci.yml](.github/workflows/ci.yml), which installs the tools at
-the same versions as the [Linux Setup](#linux-setup) and runs the targets below.
+repository ships two ready-to-use workflows:
+
+- [.github/workflows/ci.yml](.github/workflows/ci.yml) installs the tools at
+  the same versions as the [Linux Setup](#linux-setup) and runs the targets
+  below, on every push and pull request to `main` and `dev`.
+- [.github/workflows/commit-lint.yml](.github/workflows/commit-lint.yml) checks
+  commit messages with [gitlint] against the
+  [Commit Message Guidelines](.github/COMMIT_MESSAGE_GUIDELINES.md), and checks
+  the pull request title follows [Conventional Commits], since it becomes the
+  squash-merge commit message.
+
 On any other CI system, run the same commands:
 
 ```bash

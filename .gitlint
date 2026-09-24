@@ -1,0 +1,20 @@
+# Copyright (c) 2025 Daniel Rossinsky (https://github.com/rtsworks)
+# SPDX-License-Identifier: MIT
+
+# See .github/COMMIT_MESSAGE_GUIDELINES.md for the full rules this enforces.
+
+[general]
+contrib=contrib-title-conventional-commits
+ignore=body-is-missing
+
+[title-max-length]
+line-length=50
+
+[title-must-not-contain-word]
+words=WIP
+
+[body-max-line-length]
+line-length=72
+
+[contrib-title-conventional-commits]
+types=feat,fix,docs,style,refactor,perf,test,chore,ci,build,revert
