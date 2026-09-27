@@ -9,9 +9,11 @@ Changes are organized into the following categories:
 - **Fixed:** Bug fixes that resolve issues or correct unintended behavior.
 - **Removed:** Features or components that have been removed from the project.
 
-## Unreleased
+## v1.0.1 (2026-09-27)
 
-- Changes for the next release will be documented here.
+### Changed
+
+- **CHANGELOG.md**: Adapt to commitizen
 
 ## v1.0.0 (2026-09-27)
 
