@@ -9,13 +9,13 @@ Changes are organized into the following categories:
 - **Fixed:** Bug fixes that resolve issues or correct unintended behavior.
 - **Removed:** Features or components that have been removed from the project.
 
-## [Unreleased]
+## Unreleased
 
 - Changes for the next release will be documented here.
 
-## [v1.0.0] - 2026-09-27
+## v1.0.0 (2026-09-27)
 
-**Added:**
+### Added
 
 - A `make`-based workflow with independent `format`, `format-check`, `lint`,
   `test`, `build`, `docs`, and `clean` targets, and debug/release build
@@ -39,6 +39,3 @@ Changes are organized into the following categories:
   a CODEOWNERS file.
 - Starting templates for new `.c` and `.h` files, matching the C Style Guide.
 - Vendored third-party tools: Ceedling, doxygen-awesome-css, and PlantUML.
-
-[Unreleased]: https://github.com/rtsworks/lintra/compare/v1.0.0...HEAD
-[v1.0.0]: https://github.com/rtsworks/lintra/releases/tag/v1.0.0
