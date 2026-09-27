@@ -1,0 +1,82 @@
+# Copyright (c) 2025 Daniel Rossinsky (https://github.com/rtsworks)
+# SPDX-License-Identifier: MIT
+
+# See .github/COMMIT_MESSAGE_GUIDELINES.md for the full rules this mirrors.
+# Uses the cz_customize provider so the type list matches all 11 documented
+# types (the built-in cz_conventional_commits provider is missing chore and
+# revert from its menu).
+
+[tool.commitizen]
+name = "cz_customize"
+message_length_limit = 50
+body_length_limit = 72
+
+[tool.commitizen.customize]
+message_template = """\
+{%- set footer_lines = [] -%}
+{%- if is_breaking_change %}{% set x = footer_lines.append("BREAKING CHANGE: " + breaking_change_description) %}{% endif -%}
+{%- if closes %}{% set x = footer_lines.append("Closes: " + closes) %}{% endif -%}
+{%- if refs %}{% set x = footer_lines.append("Refs: " + refs) %}{% endif -%}
+{{ change_type }}{% if scope %}({{ scope.split()|join("-") }}){% endif %}{% if is_breaking_change %}!{% endif %}: {{ subject }}{% if body %}
+
+{{ body }}{% endif %}{% if footer_lines %}
+
+{{ footer_lines|join("\n") }}{% endif %}\
+"""
+example = "fix(cmd): correct AT+STATUS response formatting\n\nFix formatting of AT+STATUS key/value pairs.\n\nCloses: #42"
+schema = "<type>(<scope>)(!): <subject>\n<BLANK LINE>\n<body>\n<BLANK LINE>\n(BREAKING CHANGE: <description>)\n(Closes: <issues>)\n(Refs: <issues>)"
+schema_pattern = "(?s)(feat|fix|docs|style|refactor|perf|test|chore|ci|build|revert)(\\([^\\s)]+\\))?!?: ([^\\n\\r]+)((\\n\\n.*)|(\\s*))?$"
+
+[[tool.commitizen.customize.questions]]
+type = "list"
+name = "change_type"
+message = "Select the type of change you are committing"
+choices = [
+    { value = "feat", name = "feat: A new feature. Correlates with MINOR in SemVer" },
+    { value = "fix", name = "fix: A bug fix. Correlates with PATCH in SemVer" },
+    { value = "docs", name = "docs: Documentation only changes" },
+    { value = "style", name = "style: Changes that do not affect the meaning of the code (white-space, formatting, missing semi-colons, etc)" },
+    { value = "refactor", name = "refactor: A code change that neither fixes a bug nor adds a feature" },
+    { value = "perf", name = "perf: A code change that improves performance" },
+    { value = "test", name = "test: Adding missing or correcting existing tests" },
+    { value = "chore", name = "chore: Maintenance tasks, tooling, dependencies, etc." },
+    { value = "ci", name = "ci: Changes to CI configuration files and scripts" },
+    { value = "build", name = "build: Changes that affect the build system or external dependencies" },
+    { value = "revert", name = "revert: Reverts a previous commit" },
+]
+
+[[tool.commitizen.customize.questions]]
+type = "input"
+name = "scope"
+message = "What is the scope of this change? (a noun describing a section of the codebase, spaces become hyphens): (press [enter] to skip)"
+
+[[tool.commitizen.customize.questions]]
+type = "input"
+name = "subject"
+message = "Write a short and imperative summary of the code changes: (lower case and no period)"
+
+[[tool.commitizen.customize.questions]]
+type = "input"
+name = "body"
+message = "Provide additional contextual information about the code changes: (press [enter] to skip)"
+
+[[tool.commitizen.customize.questions]]
+type = "confirm"
+name = "is_breaking_change"
+message = "Is this a BREAKING CHANGE? Correlates with MAJOR in SemVer"
+default = false
+
+[[tool.commitizen.customize.questions]]
+type = "input"
+name = "breaking_change_description"
+message = "Describe the breaking change, used only if the above was yes: (press [enter] to skip)"
+
+[[tool.commitizen.customize.questions]]
+type = "input"
+name = "closes"
+message = "Issue(s) this commit closes, e.g. #42, #55: (press [enter] to skip)"
+
+[[tool.commitizen.customize.questions]]
+type = "input"
+name = "refs"
+message = "Issue(s) to reference without closing, e.g. #23: (press [enter] to skip)"

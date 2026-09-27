@@ -30,6 +30,14 @@ git checkout -b dev upstream/dev
 git push origin dev
 ```
 
+3. **Install the gitlint commit-msg hook** — this requires
+   [gitlint](README.md#tool-versions) to already be installed, and catches a
+   badly formatted commit message immediately instead of only in CI:
+
+```bash
+gitlint install-hook
+```
+
 ## Start a New Feature
 
 Repeat this for every feature or fix, starting from an up-to-date `dev`:
@@ -59,7 +67,8 @@ git push origin feature/my-feature
 
 - Follow the project [C Style Guide](C_STYLE_GUIDE.md).
 - Follow the [Commit Message Guidelines](.github/COMMIT_MESSAGE_GUIDELINES.md)
-  (Conventional Commits, 50/72 rule).
+  (Conventional Commits, 50/72 rule) — or run `cz commit` instead of
+  `git commit` for a guided prompt that builds the message for you.
 - Run `make format` before committing.
 
 ## Keep Your Branch Up to Date

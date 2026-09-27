@@ -7,6 +7,11 @@ This project uses **[Conventional Commits]** and enforces the **50/72 rule** for
 all commit messages. Follow these guidelines to ensure clear project history, 
 better tooling support, and more readable logs.
 
+You don't have to apply these rules by hand: running `cz commit` instead of
+`git commit` walks you through them interactively and builds a correctly
+formatted message for you. See [Commitizen](../README.md#tool-versions) in
+the README for installation.
+
 ## 1. Conventional Commits
 
 All commits must follow the [Conventional Commits] specification.

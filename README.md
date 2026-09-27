@@ -98,6 +98,7 @@ against. Newer versions generally work, but these are the known-good ones.
 | clang-format   | 21.1.0    | Formatting the sources              |
 | Doxygen        | 1.18.0    | Generating the documentation        |
 | gitlint        | 0.19.1    | Checking commit message format      |
+| Commitizen     | 4.19.0    | Writing commit messages             |
 
 #### Linux Mint
 
@@ -114,6 +115,7 @@ against. Newer versions generally work, but these are the known-good ones.
 | clang-format   | 21.1.0    | Formatting the sources              |
 | Doxygen        | 1.18.0    | Generating the documentation        |
 | gitlint        | 0.19.1    | Checking commit message format      |
+| Commitizen     | 4.19.0    | Writing commit messages             |
 
 The Ceedling version must match `:ceedling_version:` in `project.yml`.
 
@@ -152,10 +154,20 @@ gem install ceedling -v 1.0.1
 still has to be installed so that the Ruby gems it depends on are available.
 
 Install [gitlint], used to check commit messages against the
-[Commit Message Guidelines](.github/COMMIT_MESSAGE_GUIDELINES.md):
+[Commit Message Guidelines](.github/COMMIT_MESSAGE_GUIDELINES.md), and install
+it as a commit-msg hook so a badly formatted message is caught immediately
+instead of only in CI:
 
 ```bash
 pip3 install gitlint
+gitlint install-hook
+```
+
+Install [Commitizen], a guided prompt that builds a correctly formatted
+commit message for you:
+
+```bash
+pip3 install commitizen
 ```
 
 [MinGW]: https://nuwen.net/mingw.html
@@ -166,6 +178,7 @@ pip3 install gitlint
 [LLVM]: https://releases.llvm.org/
 [Doxygen]: https://www.doxygen.nl/download.html
 [gitlint]: https://jorisroovers.com/gitlint/
+[Commitizen]: https://commitizen-tools.github.io/commitizen/
 [Conventional Commits]: https://www.conventionalcommits.org/
 
 ### Linux Setup
@@ -198,10 +211,20 @@ sudo pip3 install clang-format==21.1.0
 ```
 
 - Install [gitlint], used to check commit messages against the
-  [Commit Message Guidelines](.github/COMMIT_MESSAGE_GUIDELINES.md):
+  [Commit Message Guidelines](.github/COMMIT_MESSAGE_GUIDELINES.md), and
+  install it as a commit-msg hook so a badly formatted message is caught
+  immediately instead of only in CI:
 
 ```bash
 sudo pip3 install gitlint
+gitlint install-hook
+```
+
+- Install [Commitizen], a guided prompt that builds a correctly formatted
+  commit message for you:
+
+```bash
+sudo pip3 install commitizen
 ```
 
 - Install [Ceedling]:

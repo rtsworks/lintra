@@ -5,7 +5,11 @@
 
 [general]
 contrib=contrib-title-conventional-commits
-ignore=body-is-missing
+# body-is-missing: a body is optional for a trivial change (see
+# COMMIT_MESSAGE_GUIDELINES.md). body-min-length: without this, a commit with
+# no prose body but a short footer only (e.g. just "Closes: #42") is wrongly
+# treated as a too-short body by gitlint's default minimum.
+ignore=body-is-missing,body-min-length
 
 [title-max-length]
 line-length=50
@@ -18,3 +22,9 @@ line-length=72
 
 [contrib-title-conventional-commits]
 types=feat,fix,docs,style,refactor,perf,test,chore,ci,build,revert
+
+# CT1 above only checks the type. This additionally forbids whitespace inside
+# the scope, e.g. fix(cmd): ... or fix(user-service): ... but not
+# fix(user service): ...
+[title-match-regex]
+regex=^[a-z]+(\([^\s)]+\))?!?: .+$
