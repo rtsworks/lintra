@@ -8,7 +8,7 @@
 
 [tool.commitizen]
 name = "cz_customize"
-version = "1.0.0"
+version = "1.0.1"
 tag_format = "v$version"
 message_length_limit = 50
 body_length_limit = 72
