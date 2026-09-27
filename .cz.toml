@@ -8,10 +8,19 @@
 
 [tool.commitizen]
 name = "cz_customize"
+version = "1.0.0"
+tag_format = "v$version"
 message_length_limit = 50
 body_length_limit = 72
+changelog_file = "CHANGELOG.md"
+changelog_incremental = true
+update_changelog_on_bump = true
 
 [tool.commitizen.customize]
+commit_parser = "^(?P<change_type>feat|fix|docs|style|refactor|perf|test|chore|ci|build|revert)(?:\\((?P<scope>[^()\\r\\n]*)\\)|\\()?(?P<breaking>!)?:\\s(?P<message>.*)?"
+changelog_pattern = "^(feat|fix|docs|style|refactor|perf|test|chore|ci|build|revert)(\\([^\\s)]+\\))?!?:"
+change_type_map = { "feat" = "Added", "fix" = "Fixed", "refactor" = "Changed", "perf" = "Changed", "docs" = "Changed", "style" = "Changed", "test" = "Changed", "build" = "Changed", "ci" = "Changed", "chore" = "Changed", "revert" = "Removed" }
+change_type_order = ["Added", "Changed", "Fixed", "Removed"]
 message_template = """\
 {%- set footer_lines = [] -%}
 {%- if is_breaking_change %}{% set x = footer_lines.append("BREAKING CHANGE: " + breaking_change_description) %}{% endif -%}
