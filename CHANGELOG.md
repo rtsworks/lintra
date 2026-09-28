@@ -9,6 +9,17 @@ Changes are organized into the following categories:
 - **Fixed:** Bug fixes that resolve issues or correct unintended behavior.
 - **Removed:** Features or components that have been removed from the project.
 
+## v1.1.1 (2026-09-28)
+
+### Changed
+
+- **release**: v1.1.0
+
+### Fixed
+
+- **pull-requests**: Updated guideline (#2)
+- **pull-requests**: Updated guideline
+
 ## v1.1.0 (2026-09-28)
 
 ### Added
