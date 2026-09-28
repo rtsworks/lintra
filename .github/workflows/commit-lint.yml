@@ -12,6 +12,10 @@ on:
   push:
     branches: [main, dev]
 
+permissions:
+  contents: read
+  pull-requests: read
+
 jobs:
   gitlint:
     runs-on: ubuntu-latest
