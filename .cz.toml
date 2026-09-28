@@ -8,13 +8,14 @@
 
 [tool.commitizen]
 name = "cz_customize"
-version = "1.0.1"
+version = "1.1.0"
 tag_format = "v$version"
 message_length_limit = 50
 body_length_limit = 72
 changelog_file = "CHANGELOG.md"
 changelog_incremental = true
 update_changelog_on_bump = true
+bump_message = "chore(bump): version $current_version → $new_version"
 
 [tool.commitizen.customize]
 commit_parser = "^(?P<change_type>feat|fix|docs|style|refactor|perf|test|chore|ci|build|revert)(?:\\((?P<scope>[^()\\r\\n]*)\\)|\\()?(?P<breaking>!)?:\\s(?P<message>.*)?"
