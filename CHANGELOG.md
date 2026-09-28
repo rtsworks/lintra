@@ -9,6 +9,17 @@ Changes are organized into the following categories:
 - **Fixed:** Bug fixes that resolve issues or correct unintended behavior.
 - **Removed:** Features or components that have been removed from the project.
 
+## v1.1.0 (2026-09-28)
+
+### Added
+
+- **workflows**: Permission update
+
+### Changed
+
+- **commitizen**: update bump commit message
+- **bump**: manual version bump
+
 ## v1.0.1 (2026-09-27)
 
 ### Changed
