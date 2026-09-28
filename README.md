@@ -443,7 +443,8 @@ repository ships two ready-to-use workflows:
   commit messages with [gitlint] against the
   [Commit Message Guidelines](.github/COMMIT_MESSAGE_GUIDELINES.md), and checks
   the pull request title follows [Conventional Commits], since it becomes the
-  squash-merge commit message.
+  merge commit message (see [Pull Request Guidelines](.github/PULL_REQUEST_GUIDELINES.md)
+  for how this differs between PRs into `dev` and release PRs into `main`).
 
 On any other CI system, run the same commands:
 

@@ -88,9 +88,10 @@ Once your feature is ready:
 
 1. Go to your fork on GitHub and click **Compare & pull request**.
 2. Confirm the base is `dev` on `rtsworks/lintra`, and compare is your branch.
-3. Give the PR title a [Conventional Commits] type — it becomes the merge
+3. Give the PR title a [Conventional Commits] type — it becomes the squash
    commit message. See the [Pull Request Guidelines](.github/PULL_REQUEST_GUIDELINES.md).
-4. Fill out the Pull Request template and click **Create pull request**.
+4. GitHub will prompt you to **Choose a template** — pick `feature.md`, fill
+   it out, and click **Create pull request**.
 
 [Conventional Commits]: https://www.conventionalcommits.org/
 
